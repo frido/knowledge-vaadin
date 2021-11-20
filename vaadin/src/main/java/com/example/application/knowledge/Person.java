@@ -1,12 +1,15 @@
 package com.example.application.knowledge;
 
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -16,14 +19,29 @@ public class Person {
     @Id
     private int id;
     private String name;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "know_person_item", 
+        joinColumns = { @JoinColumn(name = "person_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "item_id") }
+    )
+    private Set<Item> items;
 
-    public int getId() {
+    public Set<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<Item> items) {
+		this.items = items;
+	}
+
+	public int getId() {
         return this.id;
     }
 

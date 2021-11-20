@@ -16,7 +16,7 @@ public class Department {
     private int id;
     private String name;
     @OneToMany(
-        cascade = CascadeType.ALL,
+        cascade = CascadeType.ALL,  // TODO: asi nepotrebujem, staci iba mappedBy
         orphanRemoval = true,
         fetch = FetchType.EAGER,
         mappedBy = "department"

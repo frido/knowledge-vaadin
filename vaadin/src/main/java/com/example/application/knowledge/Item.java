@@ -10,18 +10,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "know_team")
-public class Team {
+@Table(name = "know_item")
+public class Item {
     @Id
     private int id;
     private String name;
-    @OneToMany(
-        cascade = CascadeType.ALL, // TODO: asi nepotrebujem, staci iba mappedBy
-        orphanRemoval = true,
-        fetch = FetchType.LAZY,
-        mappedBy = "team"
-    ) 
-    private List<Person> persons;
 
     public int getId() {
         return this.id;
@@ -39,17 +32,9 @@ public class Team {
         this.name = name;
     }
 
-    public List<Person> getPersons() {
-        return this.persons;
-    }
-
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
-
     @Override
-    public String  toString() {
-        return "Team " + getJavaId() + " {" +
+    public String toString() {
+        return "Item " + getJavaId() + " {" +
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             "}";

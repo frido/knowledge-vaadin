@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.application.knowledge.Department;
 import com.example.application.knowledge.EventRow;
+import com.example.application.knowledge.Item;
 import com.example.application.knowledge.MessageQueue;
 import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonWithVersion;
@@ -50,6 +51,7 @@ public class KnowledgeView extends Div {
     private Label personWithVersionLabel = new Label();
     private Label departmentLabel = new Label();
     private Label teamLabel = new Label();
+    private Label itemLabel = new Label();
     private VerticalLayout buttonPanel;
 
     Grid<EventRow> grid = new Grid<>(EventRow.class);
@@ -61,7 +63,7 @@ public class KnowledgeView extends Div {
         this.service = service;
 
         buttonPanel = new VerticalLayout();
-        buttonPanel.add(personLabel, departmentLabel, teamLabel);
+        buttonPanel.add(personLabel, departmentLabel, teamLabel, itemLabel);
         
         var person1 = new HorizontalLayout();
         var loadPersonBtn = new Button("Load Person", this::onLoadPerson);
@@ -258,9 +260,18 @@ public class KnowledgeView extends Div {
         personLabel.setText(String.valueOf(personEntity));
         teamLabel.setText(String.valueOf(teamEntity));
         departmentLabel.setText(String.valueOf(departmentEntity));
+        itemLabel.setText(listToString(personEntity.getItems()));
     }
 
-    private void findPersonFetch(ClickEvent<Button> event) {
+    private String listToString(Set<Item> items) {
+		String str = "";
+		for (Item item : items) {
+			str = str + String.valueOf(item) + ", ";
+		}
+		return str;
+	}
+
+	private void findPersonFetch(ClickEvent<Button> event) {
         clean();
         personEntity = service.findPersonFetch();
         teamEntity = personEntity.getTeam();

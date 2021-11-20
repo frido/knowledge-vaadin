@@ -2,6 +2,7 @@ package com.example.application.services;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.example.application.knowledge.Item;
 import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonDto;
 import com.example.application.knowledge.PersonWithVersion;
@@ -80,10 +82,11 @@ public class EntityService {
     @Transactional
     public Person findPersonTree() {
         Person person = em.find(Person.class, 1);
-        person.getDepartment();
+        person.getTeam();
+        for (Item item : person.getItems()) {
+			System.out.println(item);
+		}
         transactionalService.getTeamNameRequired(person);
-        // MessageQueue.getInstance().add("findPersonTree - can load departnent: " + person.getDepartment());
-        // MessageQueue.getInstance().add("findPersonTree - can load team: " + transactionalService.getTeamNameRequired(person));
         return person;
     }
 

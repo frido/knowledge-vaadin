@@ -35,7 +35,7 @@ import com.vaadin.flow.router.Route;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "card-list", layout = MainView.class)
+@Route(value = "", layout = MainView.class)
 @PageTitle("Card List")
 public class KnowledgeView extends Div {
 

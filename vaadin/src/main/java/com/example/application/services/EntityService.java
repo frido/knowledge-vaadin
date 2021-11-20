@@ -2,7 +2,7 @@ package com.example.application.services;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.function.Consumer;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -12,12 +12,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
-import com.example.application.knowledge.MessageQueue;
-import com.example.application.knowledge.Person;
-import com.example.application.knowledge.PersonDto;
-import com.example.application.knowledge.PersonWithVersion;
-import com.example.application.knowledge.Person_;
-import com.example.application.petrzalka.page.budget.Budget;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +19,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import com.example.application.knowledge.Person;
+import com.example.application.knowledge.PersonDto;
+import com.example.application.knowledge.PersonWithVersion;
+import com.example.application.knowledge.Person_;
 
 @Service
 public class EntityService {
@@ -114,11 +113,6 @@ public class EntityService {
         CriteriaQuery<Person> all = cq.select(rootEntry);
         TypedQuery<Person> allQuery = em.createQuery(all);
         return allQuery.getSingleResult();
-    }
-
-    @Transactional
-    public Budget merge(Budget data) {
-        return em.merge(data);
     }
 
     @Transactional

@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "person")
+@Table(name = "know_person")
 public class Person {
     @Id
     private int id;

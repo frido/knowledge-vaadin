@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "person_with_version")
+@Table(name = "know_person_with_version")
 public class PersonWithVersion {
     @Id
     private int id;

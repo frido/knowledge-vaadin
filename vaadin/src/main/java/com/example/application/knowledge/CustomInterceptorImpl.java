@@ -123,13 +123,13 @@ public class CustomInterceptorImpl extends EmptyInterceptor {
 
     @Override
     public void postFlush(Iterator entities) {
-        add("postFlush", toStream(entities));
+        add("postFlush", "interator???");
         super.postFlush(entities);
     }
 
     @Override
     public void preFlush(Iterator entities) {
-        add("preFlush", toStream(entities));
+        add("preFlush", "interator???");
         super.preFlush(entities);
     }
 

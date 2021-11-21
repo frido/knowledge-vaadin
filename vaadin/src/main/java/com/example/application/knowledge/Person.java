@@ -3,15 +3,7 @@ package com.example.application.knowledge;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "know_person")
@@ -25,7 +17,7 @@ public class Person {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "know_person_item", 
         joinColumns = { @JoinColumn(name = "person_id") }, 
@@ -75,12 +67,16 @@ public class Person {
     }
 
 
+    // FIXME: nemozem to vsetko takto vypisovat v toString, pretoze entitu vypisujem v interceptoroch a tym padom sa mi nacitavaju lazy veci aj ked nechcem
     @Override
     public String toString() {
         return "Person " + getJavaId() + "{" +
-            " id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", name='" + getName() + "'" +
+//                ", department='" + getDepartmentString() + "'" +
+//                ", team='" + getTeamString() + "'" +
+//                ", items='" + getItemsString() + "'" +
+                "}";
     }
 
     private String getJavaId() {
@@ -103,4 +99,8 @@ public class Person {
         return Objects.hashCode(id);
     }
 
+    @PostLoad
+    public void postLoad() {
+//        TODO: generic base class with all listeners
+    }
 }

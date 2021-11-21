@@ -57,7 +57,6 @@ public class EntityService {
         return allQuery.getResultList();
     }
 
-    // @Transactional
     public <T> T find(Class<T> clazz) {
         return em.find(clazz, 1);
     }
@@ -79,14 +78,14 @@ public class EntityService {
         return em.merge(entity);
     }
 
-    @Transactional
+    @Transactional // NOTE: not the same as find without transactional
     public Person findPersonTree() {
         Person person = em.find(Person.class, 1);
-        person.getTeam();
+        person.getTeam(); // NOTE: toto nestaci
+        transactionalService.getTeamNameRequired(person); // NOTE: musim zavolat toto aby sa to nacitalo
         for (Item item : person.getItems()) {
 			System.out.println(item);
 		}
-        transactionalService.getTeamNameRequired(person);
         return person;
     }
 
@@ -155,7 +154,7 @@ public class EntityService {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
         definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO: prepinatelne ako parameter
-        definition.setTimeout(3);
+//        definition.setTimeout(3);
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         person1.setName("changed in 1 transaction");
@@ -192,7 +191,7 @@ public class EntityService {
     public Person testing3() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // TODO: prepinatelne ako parameter
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO: prepinatelne ako parameter
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         transactionManager.commit(status1);

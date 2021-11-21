@@ -1,13 +1,9 @@
 package com.example.application.knowledge;
 
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "know_item")
@@ -15,6 +11,8 @@ public class Item {
     @Id
     private int id;
     private String name;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "items")
+    private Set<Person> persons;
 
     public int getId() {
         return this.id;
@@ -44,4 +42,11 @@ public class Item {
         return super.toString().substring(super.toString().indexOf("@"));
     }
 
+    public Set<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(Set<Person> persons) {
+        this.persons = persons;
+    }
 }

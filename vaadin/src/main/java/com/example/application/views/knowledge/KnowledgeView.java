@@ -61,9 +61,9 @@ public class KnowledgeView extends Div {
         var merge2 = new HorizontalLayout();
         var merge3 = new HorizontalLayout();
         var merge4 = new HorizontalLayout();
-        var loadPersonVersionBtn = new Button("Load Person Version", this::onLoadPersonVerson);
-        var changePersonVersionBtn = new Button("Change Person Version", this::onChangePersonVerson);
-        var mergePersonVersionBtn = new Button("Merge Person Version", this::onMergePersonVerson);
+        var loadPersonVersionBtn = new Button("Load Person Version", this::onLoadPersonVersion);
+        var changePersonVersionBtn = new Button("Change Person Version", this::onChangePersonVersion);
+        var mergePersonVersionBtn = new Button("Merge Person Version", this::onMergePersonVersion);
         var editPersonInServiceBtn = new Button("Edit Person In Service", this::onEditPersonInService);
         var editPersonOutServiceBtn = new Button("Edit Person Out Service", this::onEditPersonOutService);
         var editAllPersons = new Button("Edit All Persons", this::onEditAllPersons);
@@ -153,10 +153,6 @@ public class KnowledgeView extends Div {
         service.testing();
     }
 
-
-
-
-
     private void onEditPersonInService(ClickEvent<Button> event) {
         clean();
         personEntity = service.findAndEdit();
@@ -180,22 +176,18 @@ public class KnowledgeView extends Div {
         service.onEditAllPersonsBatch();
     }
 
-
-
-
-
-    private void onLoadPersonVerson(ClickEvent<Button> event) {
+    private void onLoadPersonVersion(ClickEvent<Button> event) {
         personWithVersionEntity = service.findPersonWithVersion();
         personWithVersionLabel.setText(String.valueOf(personWithVersionEntity));
     }
 
-    private void onChangePersonVerson(ClickEvent<Button> event) {
+    private void onChangePersonVersion(ClickEvent<Button> event) {
         var person = service.findPersonWithVersion();
         person.setName(randomText());
         service.merge(person);
     }
 
-    private void onMergePersonVerson(ClickEvent<Button> event) {
+    private void onMergePersonVersion(ClickEvent<Button> event) {
         try {
         personWithVersionEntity.setName(randomText());
         service.merge(personWithVersionEntity);

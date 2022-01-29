@@ -1,0 +1,18 @@
+{
+    "java.checkstyle.configuration": "/google_checks.xml",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "localhost",
+            "database": "world",
+            "username": "root",
+            "password": "root"
+        }
+    ]
+}

@@ -29,5 +29,4 @@ Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla fl
 ## Cache
 
 local change
-remote change 1
-remote change 2
+local change 2

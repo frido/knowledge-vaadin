@@ -31,3 +31,4 @@ Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla fl
 local change
 local change 2
 remote change 1
+remote change 2

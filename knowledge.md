@@ -27,3 +27,5 @@ Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla fl
 ## Locking
 
 ## Cache
+
+merge test

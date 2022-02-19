@@ -6,9 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.Immutable;
 
 @Entity
 @Table(name = "know_car")
+@Immutable
 public class Car {
     @Id
     private int id;

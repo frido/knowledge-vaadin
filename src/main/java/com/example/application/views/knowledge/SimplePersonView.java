@@ -29,9 +29,11 @@ public class SimplePersonView extends Div {
         var mergePersonBtn = new Button("Merge Person", this::onMergePerson);
         var mergePersonAllBtn = new Button("Merge Person All", this::onMergePersonAll);
         var mergePersonDtoBtn = new Button("Merge Person DTO", this::onMergePersonDto);
+        var mergePersonTupleBtn = new Button("Merge Person TUPLE", this::onMergePersonTuple);
         add(new Div(loadPersonBtn));
         add(new Div(loadPersonFetchBtn, loadPersonTreeBtn));
-        add(new Div(mergePersonBtn, mergePersonAllBtn, mergePersonDtoBtn));
+        add(new Div(mergePersonBtn, mergePersonAllBtn));
+        add(new Div(mergePersonDtoBtn, mergePersonTupleBtn));
     }
 
     private void onLoadPerson(ClickEvent<Button> event) {
@@ -81,7 +83,19 @@ public class SimplePersonView extends Div {
         personEnt.setId(personDto.id());
         personEnt.setName(randomText());
         personEnt.setDepartment(personDto.department());
-        personEnt.setTeam(personDto.team()); // TODO: nie uplne spravne DTO kedze toto je proxy
+        personEnt.setTeam(personDto.team());
+        personEnt = service.merge(personEnt);
+        personLabel.setText(String.valueOf(personEnt));
+    }
+
+    private void onMergePersonTuple(ClickEvent<Button> event) {
+        clean();
+        var personDto = service.findPersonTouple();
+        var personEnt = new Person();
+        personEnt.setId(personDto.getId());
+        personEnt.setName(randomText());
+        personEnt.setDepartment(personDto.getDepartment());
+        personEnt.setTeam(personDto.getTeam());
         personEnt = service.merge(personEnt);
         personLabel.setText(String.valueOf(personEnt));
     }

@@ -37,7 +37,12 @@ Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla fl
 
 #### Locknute riadku pri edite
 
-**LockWaitingExceedException (vymyslel som si) nejaka taka excepsion kym sa neuvolni editovaci lock**
+**LockWaitingExceedException (vymyslel som si) nejaka taka excepsion kym sa neuvolni editovaci lock**.
+
+### Imutable
+
+Very good for views, improve performance. Althou it is hard to test what happens under the hood.
+Just set it for all view.
 
 ## Cache
 
@@ -46,7 +51,7 @@ Aku guava chage to pouzivame v projekte? Pohladat slova cache a ako rozne ju mam
 ## Lombok
 
 Write less but provide: getters/setter, contructors, builders.
-**It is possible to use Lombok on entity?**
+It is possible to use it with entity. @Getter, @Setter, @NoArgsConstructor, @ToString Can by applied on Entity.
 
 ## Quarkus Panache
 

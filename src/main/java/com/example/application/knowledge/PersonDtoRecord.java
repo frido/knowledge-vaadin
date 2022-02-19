@@ -1,6 +1,6 @@
 package com.example.application.knowledge;
 
-public record PersonDto(
+public record PersonDtoRecord(
     int id,
     String name,
     Department department,

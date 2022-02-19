@@ -28,7 +28,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
+import org.hibernate.annotations.Immutable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "", layout = MainView.class)
@@ -157,6 +157,7 @@ public class KnowledgeView extends Div {
         service.testing();
     }
 
+    @Immutable
     private void onEditPersonInService(ClickEvent<Button> event) {
         clean();
         personEntity = service.findAndEdit();

@@ -2,17 +2,21 @@ package com.example.application.services;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Set;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-
+import com.example.application.knowledge.Item;
+import com.example.application.knowledge.Person;
+import com.example.application.knowledge.PersonDtoLombok;
+import com.example.application.knowledge.PersonDtoRecord;
+import com.example.application.knowledge.PersonWithVersion;
+import com.example.application.knowledge.Person_;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +24,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
-import com.example.application.knowledge.Item;
-import com.example.application.knowledge.Person;
-import com.example.application.knowledge.PersonDto;
-import com.example.application.knowledge.PersonWithVersion;
-import com.example.application.knowledge.Person_;
 
 @Service
 public class EntityService {
@@ -82,27 +80,43 @@ public class EntityService {
     public Person findPersonTree() {
         Person person = em.find(Person.class, 1);
         person.getTeam(); // NOTE: toto nestaci
-        transactionalService.getTeamNameRequired(person); // NOTE: musim zavolat toto aby sa to nacitalo
+        transactionalService.getTeamNameRequired(person); // NOTE: musim zavolat toto aby sa to
+                                                          // nacitalo
         for (Item item : person.getItems()) {
-			System.out.println(item);
-		}
+            System.out.println(item);
+        }
         return person;
     }
 
     @Transactional
-    public PersonDto findPersonDto() {
+    public PersonDtoRecord findPersonDto() {
         var cb = em.getCriteriaBuilder();
-        CriteriaQuery<PersonDto> cq = cb.createQuery(PersonDto.class);
+        CriteriaQuery<PersonDtoRecord> cq = cb.createQuery(PersonDtoRecord.class);
         Root<Person> root = cq.from(Person.class);
-        cq.select(cb.construct(PersonDto.class, 
-            root.get(Person_.id),
-            root.get(Person_.name),
-            root.get(Person_.department),
-            root.get(Person_.team)
-            ));
+        cq.select(cb.construct(PersonDtoRecord.class, root.get(Person_.id), root.get(Person_.name),
+                root.get(Person_.department), root.get(Person_.team)));
         cq.where(cb.equal(root.get(Person_.id), 1));
-        TypedQuery<PersonDto> allQuery = em.createQuery(cq);
+        TypedQuery<PersonDtoRecord> allQuery = em.createQuery(cq);
         return allQuery.getSingleResult();
+    }
+
+    @Transactional
+    public PersonDtoLombok findPersonTouple() {
+        var cb = em.getCriteriaBuilder();
+        CriteriaQuery<Tuple> query = cb.createTupleQuery();
+        Root<Person> root = query.from(Person.class);
+        query.multiselect(root.get(Person_.id), root.get(Person_.name),
+                root.get(Person_.department), root.get(Person_.team));
+        query.where(cb.equal(root.get(Person_.id), 1));
+        TypedQuery<Tuple> allQuery = em.createQuery(query);
+        Tuple tuple = allQuery.getSingleResult();
+        
+        return PersonDtoLombok.builder()
+        .id(tuple.get(root.get(Person_.id)))
+        .name(tuple.get(root.get(Person_.name)))
+        .department(tuple.get(root.get(Person_.department)))
+        .team(tuple.get(root.get(Person_.team)))
+        .build();
     }
 
     @Transactional
@@ -134,13 +148,13 @@ public class EntityService {
         var hibernateSession = em.unwrap(Session.class);
         Integer oldBatchSize = hibernateSession.getJdbcBatchSize();
         try {
-          hibernateSession.setJdbcBatchSize(batchSize);
-          runnable.run();
-          hibernateSession.flush();
+            hibernateSession.setJdbcBatchSize(batchSize);
+            runnable.run();
+            hibernateSession.flush();
         } finally {
-          hibernateSession.setJdbcBatchSize(oldBatchSize);
+            hibernateSession.setJdbcBatchSize(oldBatchSize);
         }
-      }
+    }
 
     @Transactional
     public void onEditAllPersonsBatch() {
@@ -155,12 +169,15 @@ public class EntityService {
     public void testing() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO: prepinatelne ako parameter
-//        definition.setTimeout(3);
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO:
+                                                                                       // prepinatelne
+                                                                                       // ako
+                                                                                       // parameter
+        // definition.setTimeout(3);
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         person1.setName("changed in 1 transaction");
-        
+
         TransactionStatus status2 = transactionManager.getTransaction(definition);
         var person2 = em.find(Person.class, 1);
         person2.setName("changed in 2 transaction");
@@ -181,7 +198,10 @@ public class EntityService {
     public void testing2() throws InterruptedException {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // TODO: prepinatelne ako parameter
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // TODO:
+                                                                                           // prepinatelne
+                                                                                           // ako
+                                                                                           // parameter
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         person1.setName("XXX");
@@ -193,7 +213,10 @@ public class EntityService {
     public Person testing3() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO: prepinatelne ako parameter
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO:
+                                                                                       // prepinatelne
+                                                                                       // ako
+                                                                                       // parameter
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         transactionManager.commit(status1);

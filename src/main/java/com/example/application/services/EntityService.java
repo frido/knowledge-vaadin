@@ -111,6 +111,8 @@ public class EntityService {
         CriteriaQuery<Person> cq = cb.createQuery(Person.class);
         Root<Person> rootEntry = cq.from(Person.class);
         rootEntry.fetch(Person_.team, JoinType.LEFT);
+        rootEntry.fetch(Person_.cars, JoinType.LEFT);
+        rootEntry.fetch(Person_.items, JoinType.LEFT);
         cq.where(cb.equal(rootEntry.get(Person_.id), 1));
         CriteriaQuery<Person> all = cq.select(rootEntry);
         TypedQuery<Person> allQuery = em.createQuery(all);

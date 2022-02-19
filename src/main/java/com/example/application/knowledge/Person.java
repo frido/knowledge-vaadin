@@ -1,5 +1,6 @@
 package com.example.application.knowledge;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +25,8 @@ public class Person {
         inverseJoinColumns = { @JoinColumn(name = "item_id") }
     )
     private Set<Item> items;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="person") 
+    private List<Car> cars;
 
     public Set<Item> getItems() {
 		return items;
@@ -64,6 +67,15 @@ public class Person {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+
+    public List<Car> getCars() {
+        return this.cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 
 

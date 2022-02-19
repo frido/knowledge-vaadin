@@ -74,7 +74,7 @@ public class KnowledgeView extends Div {
         merge2.add(loadPersonVersionBtn, changePersonVersionBtn, mergePersonVersionBtn);
         merge3.add(editPersonInServiceBtn, editPersonOutServiceBtn);
         merge4.add(editAllPersons, editAllPersonsBatch);
-        buttonPanel.add(merge1, personWithVersionLabel, merge2, merge3, merge4, testing);
+        buttonPanel.add(merge1, personWithVersionLabel, merge2, personLabel, merge3, merge4, testing);
 
         infoPanel = new VerticalLayout();
         infoPanel.setPadding(false);
@@ -93,8 +93,12 @@ public class KnowledgeView extends Div {
         infoPanel.add(clearGridBtn, eventFilter, grid);
 
         eventFilter.addValueChangeListener(x -> {
-            grid.setItems(items.stream().filter(i -> i.getObject().compareTo(x.getValue()) == 0).collect(Collectors.toList()));
-            grid.getDataProvider().refreshAll();
+            if (x.getValue() == null) {
+                grid.setItems(items);
+            } else {
+                grid.setItems(items.stream().filter(i -> i.getObject().compareTo(x.getValue()) == 0).collect(Collectors.toList()));
+            }
+        grid.getDataProvider().refreshAll();
         });
 
         messageQueue.addListener(this::onNewMessage);

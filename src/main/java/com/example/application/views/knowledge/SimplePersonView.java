@@ -101,6 +101,7 @@ public class SimplePersonView extends Div {
                 ", department='" + getDepartmentString(person) + "'" +
                 ", team='" + getTeamString(person) + "'" +
                 ", items='" + getItemsString(person) + "'" +
+                ", cars='" + getCarsString(person) + "'" +
                 "}";
     }
 
@@ -128,10 +129,26 @@ public class SimplePersonView extends Div {
         }
     }
 
+    private String getCarsString(Person person) {
+        try {
+            return carsToString(person);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
     private String itemsToString(Person person) {
         String str = "";
         for (Item item : person.getItems()) {
             str = str + String.valueOf(item) + ", ";
+        }
+        return str;
+    }
+
+    private String carsToString(Person person) {
+        String str = "";
+        for (Car car : person.getCars()) {
+            str = str + String.valueOf(car) + ", ";
         }
         return str;
     }

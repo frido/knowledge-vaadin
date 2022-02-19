@@ -22,13 +22,11 @@ Flush by sa mal pouzivat len pred "JPQL or Criteria query to perform a bulk upda
 
 Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla flush poradia. A teda najskor su napriklad inserty a az potom delete.
 
-**<u>Pozriet kde vsade a preco sa vola flush</u>**
-
 ## Locking
+@Version - funguje to celkom automaticky: automaticky sa zvysi version pri update; dalsi update na starej entite neprejde kedze je v nej stare version.
 
-## Cache
+### Locknute riadku pri edite
+<u>**LockWaitingExceedException (vymyslel som si) nejaka taka excepsion kym sa neuvolni editovaci lock**</u>
 
-local change
-local change 2
-remote change 1
-remote change 2
+# Cache
+Aku guava chage to pouzivame v projekte? Pohladat slova cache a ako rozne ju mame implementovany

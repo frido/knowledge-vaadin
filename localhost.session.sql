@@ -1,0 +1,1 @@
+select * from know_person;

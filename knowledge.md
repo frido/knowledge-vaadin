@@ -6,27 +6,48 @@
 * fetch join (JPQL, Criteria API) [MultipleBagFetchException](#MultipleBagFetchException)
 * <u>***named entity graph***</u>
 
-### MultipleBagFetchException
+### Fetch
+
+Fetch creates LEFT JOIN query that creates row for each child. For more fetches there are cartesian product (combination) of all childs from both fetches.
+This strategy is not applicable for real situation - maybe only if there is only one item per row.
+
+### Select all asociated entities in own query like PM1
+
+Collect all ids and entities to the map. In parent ask map to get childs.
+
+#### MultipleBagFetchException
 
 Viac `fetch` na tabulke sposobuje tuto exception. Je to upozornenie na cartesian product ked sa pouzije viac `fetch` na tabulke.
 
-## Flush
+### Flush
 
-AUTO (pred commitom, pred jpql selectom), COMMIT, ALWAYS, MANUAL 
+AUTO (pred commitom, pred jpql selectom), COMMIT, ALWAYS, MANUAL
 
 Flush by sa mal pouzivat len pred "JPQL or Criteria query to perform a bulk update or remove operations" - ak robim update cez query, musim zavolat predtym flush aby som update robil nad aktualnymi datami - tento flush musim zavolat manualne (automaticky sa deje len pred jpql select).
 
-<u>**Ako ziskat id prave persistnutej entity**</u>
+**Ako ziskat id prave persistnutej entity**
 
-### Flush operation order
+#### Flush operation order
 
 Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla flush poradia. A teda najskor su napriklad inserty a az potom delete.
 
-## Locking
+### Locking
+
 @Version - funguje to celkom automaticky: automaticky sa zvysi version pri update; dalsi update na starej entite neprejde kedze je v nej stare version.
 
-### Locknute riadku pri edite
-<u>**LockWaitingExceedException (vymyslel som si) nejaka taka excepsion kym sa neuvolni editovaci lock**</u>
+#### Locknute riadku pri edite
 
-# Cache
+**LockWaitingExceedException (vymyslel som si) nejaka taka excepsion kym sa neuvolni editovaci lock**
+
+## Cache
+
 Aku guava chage to pouzivame v projekte? Pohladat slova cache a ako rozne ju mame implementovany
+
+## Lombok
+
+Write less but provide: getters/setter, contructors, builders.
+**It is possible to use Lombok on entity?**
+
+## Quarkus Panache
+
+Active record pattern build on hibernate.

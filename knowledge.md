@@ -53,7 +53,7 @@ Ked vsak entita este nie je v sete tak nevadi ked sa jej meni ID.
 
 ### @NaturalId
 
-**???**
+**Figure out more about it**
 
 ## Cache
 

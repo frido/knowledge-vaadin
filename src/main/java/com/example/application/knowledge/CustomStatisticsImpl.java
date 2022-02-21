@@ -32,10 +32,6 @@ public class CustomStatisticsImpl extends StatisticsImpl {
         queue.add("CustomStatisticsImpl", method, null);
     }
 
-    // private void add(String msg) {
-    //     queue.add(msg);
-    // }
-
     @Override
     public void updateCollection(String role) {
         add("updateCollection", role);
@@ -182,7 +178,7 @@ public class CustomStatisticsImpl extends StatisticsImpl {
 
     @Override
     public void naturalIdQueryExecuted(String rootEntityName, long time) {
-        add("naturalIdQueryExecuted", rootEntityName + ": " + String.valueOf(time));
+        add("naturalIdQueryExecuted", rootEntityName + ": " + time);
         super.naturalIdQueryExecuted(rootEntityName, time);
     }
 

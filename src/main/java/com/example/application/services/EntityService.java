@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 import com.example.application.knowledge.Item;
 import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonDtoLombok;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Service
@@ -119,7 +119,7 @@ public class EntityService {
         .build();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Person findPersonFetch() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Person> cq = cb.createQuery(Person.class);

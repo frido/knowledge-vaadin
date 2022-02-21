@@ -25,6 +25,13 @@ AUTO (pred commitom, pred jpql selectom), COMMIT, ALWAYS, MANUAL
 
 Flush by sa mal pouzivat len pred "JPQL or Criteria query to perform a bulk update or remove operations" - ak robim update cez query, musim zavolat predtym flush aby som update robil nad aktualnymi datami - tento flush musim zavolat manualne (automaticky sa deje len pred jpql select).
 
+#### @Transactional
+
+Pre SELECT query nepotrebujem transakciu.
+Ak ju aj napriek tomu pouzijem ma to efekty take ze:
+Pred koncom transakcie sa kontroluje *findDirty* na entitach. Nasledne sa vykona *flush* ktory pri SELECToch nema vyznam.
+Optimalizaciu dosiahnem s *@Transactional(readOnly = true)* - nekontroluje sa dirty ani sa nekona flush
+
 **Ako ziskat id prave persistnutej entity**
 
 #### Flush operation order

@@ -9,10 +9,8 @@ import com.example.application.knowledge.CustomInterceptorImpl;
 import com.example.application.knowledge.CustomStatisticsImpl;
 import com.example.application.knowledge.InlineQueryLogEntryCreator;
 import com.example.application.knowledge.MessageQueue;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.stat.spi.StatisticsFactory;
-import org.hibernate.stat.spi.StatisticsImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -61,7 +59,6 @@ public class AppConfig {
 
     private HibernateJpaVendorAdapter vendorAdaptor() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        // vendorAdapter.setShowSql(true);
         return vendorAdapter;
     }
 
@@ -97,23 +94,9 @@ public class AppConfig {
         return properties;
     }
 
-    // @Bean
-    // public Properties hibernateProperties(@Autowired CustomInterceptorImpl interceptor) {
-    //     Properties properties = new Properties();
-    //     properties.put("hibernate.jdbc.batch_size", "5");
-    //     properties.put("hibernate.session_factory.interceptor", interceptor);
-    //     return properties;
-    // }
-
     @Bean
     public StatisticsFactory statisticsFactory() {
-        StatisticsFactory sf = new StatisticsFactory(){
-         @Override
-         public StatisticsImplementor buildStatistics(SessionFactoryImplementor sessionFactory) {
-             return new CustomStatisticsImpl(sessionFactory);
-         }   
-        };
-        return sf;
+        return CustomStatisticsImpl::new;
     }
 
     @Bean

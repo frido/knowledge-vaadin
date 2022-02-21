@@ -44,7 +44,7 @@ public class AppConfig {
 
     public DataSource realDataSource() {
         return DataSourceBuilder.create()
-        .driverClassName("com.mysql.jdbc.Driver")
+        .driverClassName("com.mysql.cj.jdbc.Driver")
         .url("jdbc:mysql://localhost:3306/world?autoreconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false")
         .username("root")
         .password("root")

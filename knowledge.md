@@ -38,6 +38,14 @@ Optimalizaciu dosiahnem s *@Transactional(readOnly = true)* - nekontroluje sa di
 
 Ked sa zavola flush, nedeju sa sql query podla toho ako su nakodene ale podla flush poradia. A teda najskor su napriklad inserty a az potom delete.
 
+### Relations
+
+Ked mam bidirectional relation mal by som updatovat obe relacie a udrzat ich in sync.
+Inak aj ked sa to neulozi do DB hned, v persistetnom contexte to ostava nespravne.
+Mergovanie je take ze bud mergnem novu child entitu, alebo parent entitu s tym ze nad listom musi byt cascade.
+Merge merguje len entitu ktora je tam vlozena - relacie to nemerguje pokial to nema nastavene cascade.
+Flush robi update len nad managovanou entitou - nie nad relaciami, ani ked maju nastavene cascade.
+
 ### Locking
 
 @Version - funguje to celkom automaticky: automaticky sa zvysi version pri update; dalsi update na starej entite neprejde kedze je v nej stare version.

@@ -38,8 +38,9 @@ public class SimplePersonView extends Div {
 
     private void onLoadPerson(ClickEvent<Button> event) {
         clean();
-         personEntity = service.find(Person.class);
-//        personEntity = service.testing3();
+        personEntity = service.find(Person.class);
+        MessageQueue.getInstance().add(LogType.APP, "View", "onLoadPerson",
+                personToString(personEntity));
         displayPerson(personEntity);
 
     }
@@ -109,14 +110,10 @@ public class SimplePersonView extends Div {
     }
 
     public String personToString(Person person) {
-        return "Person " + "{" +
-                " id='" + getId() + "'" +
-                ", name='" + person.getName() + "'" +
-                ", department='" + getDepartmentString(person) + "'" +
-                ", team='" + getTeamString(person) + "'" +
-                ", items='" + getItemsString(person) + "'" +
-                ", cars='" + getCarsString(person) + "'" +
-                "}";
+        return "Person " + "{" + " id='" + getId() + "'" + ", name='" + person.getName() + "'"
+                + ", department='" + getDepartmentString(person) + "'" + ", team='"
+                + getTeamString(person) + "'" + ", items='" + getItemsString(person) + "'"
+                + ", cars='" + getCarsString(person) + "'" + "}";
     }
 
     private String getDepartmentString(Person person) {

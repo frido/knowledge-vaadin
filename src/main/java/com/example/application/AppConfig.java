@@ -9,6 +9,7 @@ import com.example.application.knowledge.CustomInterceptorImpl;
 import com.example.application.knowledge.CustomStatisticsImpl;
 import com.example.application.knowledge.InlineQueryLogEntryCreator;
 import com.example.application.knowledge.MessageQueue;
+import com.example.application.views.knowledge.LogType;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.stat.spi.StatisticsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,7 @@ public class AppConfig {
 
 
     private HibernateJpaVendorAdapter vendorAdaptor() {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        return vendorAdapter;
+        return new HibernateJpaVendorAdapter();
     }
 
     @Bean(name="entityManagerFactory")
@@ -107,12 +107,12 @@ public class AppConfig {
     
             @Override
             public void sessionCreated(HttpSessionEvent hse) {
-                messageQueue.add("HttpSessionListener", "sessionCreated", String.valueOf(hse));
+                messageQueue.add(LogType.HTTP_SESSION_LISTENER, "HttpSessionListener", "sessionCreated", String.valueOf(hse));
             }
         
             @Override
             public void sessionDestroyed(HttpSessionEvent hse) {
-                messageQueue.add("HttpSessionListener", "sessionDestroyed", String.valueOf(hse));
+                messageQueue.add(LogType.HTTP_SESSION_LISTENER, "HttpSessionListener", "sessionDestroyed", String.valueOf(hse));
             }
             
         };

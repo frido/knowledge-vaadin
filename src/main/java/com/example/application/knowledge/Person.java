@@ -11,13 +11,17 @@ import javax.persistence.*;
 public class Person {
     @Id
     private int id;
+
     private String name;
+    
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
+    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "know_person_item", 
@@ -25,6 +29,7 @@ public class Person {
         inverseJoinColumns = { @JoinColumn(name = "item_id") }
     )
     private Set<Item> items;
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy="person") 
     private List<Car> cars;
 
@@ -79,16 +84,9 @@ public class Person {
     }
 
 
-    // FIXME: nemozem to vsetko takto vypisovat v toString, pretoze entitu vypisujem v interceptoroch a tym padom sa mi nacitavaju lazy veci aj ked nechcem
     @Override
     public String toString() {
-        return "Person " + getJavaId() + "{" +
-                " id='" + getId() + "'" +
-                ", name='" + getName() + "'" +
-//                ", department='" + getDepartmentString() + "'" +
-//                ", team='" + getTeamString() + "'" +
-//                ", items='" + getItemsString() + "'" +
-                "}";
+        return "Person"+ getId() + getJavaId();
     }
 
     private String getJavaId() {

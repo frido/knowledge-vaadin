@@ -12,11 +12,13 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import com.example.application.knowledge.Car;
 import com.example.application.knowledge.Item;
+import com.example.application.knowledge.MessageQueue;
 import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonDtoLombok;
 import com.example.application.knowledge.PersonDtoRecord;
 import com.example.application.knowledge.PersonWithVersion;
 import com.example.application.knowledge.Person_;
+import com.example.application.views.knowledge.LogType;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -145,6 +147,10 @@ public class EntityService {
         persons.forEach(p -> p.setName(randomText()));
     }
 
+    private void log(String method, String payload) {
+        MessageQueue.getInstance().add(LogType.APP, "View", method, payload);
+    }
+
     @Transactional
     public void onAddCarToPerson() {
         Person person = find(Person.class);
@@ -153,14 +159,15 @@ public class EntityService {
         person.getCars().add(car);
         person.setName(randomText());
 
-        System.out.println("person:" + person.getCars().stream().map(Car::toString).toList());
-        System.out.println("car:" + car);
+        
+        log("onAddCarToPerson", "person:" + person.getCars().stream().map(Car::toString).toList());
+        log("onAddCarToPerson", "car:" + car);
 
         Person person2 = find(Person.class);
-        System.out.println("person2:" + person2.getCars().stream().map(Car::toString).toList());
+        log("onAddCarToPerson", "person2:" + person2.getCars().stream().map(Car::toString).toList());
 
         List<Car> cars = findAll(Car.class);
-        System.out.println("cars:" + cars.stream().map(Car::toString).toList());
+        log("onAddCarToPerson", "cars:" + cars.stream().map(Car::toString).toList());
     }
 
     public void runBatch(Runnable runnable, int batchSize) {

@@ -2,6 +2,7 @@ package com.example.application.knowledge;
 
 import java.util.Map;
 import java.util.Set;
+import com.example.application.views.knowledge.LogType;
 import org.hibernate.HibernateException;
 import org.hibernate.event.spi.AutoFlushEvent;
 import org.hibernate.event.spi.AutoFlushEventListener;
@@ -100,17 +101,19 @@ PostCollectionUpdateEventListener
     private transient MessageQueue queue = MessageQueue.getInstance(); 
 
     private void add(String method, Object event) {
-        queue.add("CustomMergeEventListener", method, String.valueOf(event));
+        queue.add(LogType.CUSTOM_MERGE_EVENT_LISTENER, "CustomMergeEventListener", method, String.valueOf(event));
     }
 
     @Override
     public void onMerge(MergeEvent event) throws HibernateException {
-        add("onMerge1", event);
+        add("onMerge1", String.format("%s, %s, %s, %s, %s", event.getClass(), event.getEntity(), event.getEntityName(), event.getOriginal(),
+        event.getResult()));
     }
 
     @Override
     public void onMerge(MergeEvent event, Map copiedAlready) throws HibernateException {
-        add("onMerge1", event);
+        add("onMerge1", String.format("%s, %s, %s, %s, %s", event.getClass(), event.getEntity(), event.getEntityName(), event.getOriginal(),
+        event.getResult()));
     }
 
     @Override
@@ -229,7 +232,8 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onFlushEntity(FlushEntityEvent event) throws HibernateException {
-        add("onFlushEntity", event);
+        add("onFlushEntity", String.format("%s, %s, %s, %s", event.getEntity(), event.getDirtyProperties(), event.getEntityEntry(),
+        event.getPropertyValues()));
         
     }
 
@@ -250,13 +254,14 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onPersist(PersistEvent event) throws HibernateException {
-        add("onPersist", event);
+        add("onPersist", String.format("%s", event.getObject()));
         
     }
 
     @Override
     public void onPersist(PersistEvent event, Map createdAlready) throws HibernateException {
-        add("onPersist", event);
+        add("onPersist", String.format("%s -- %s", event.getObject(), 
+         createdAlready.entrySet().stream().map(String::valueOf).toList()));
         
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import com.example.application.views.knowledge.LogType;
 import net.ttddyy.dsproxy.ExecutionInfo;
 import net.ttddyy.dsproxy.QueryInfo;
 import net.ttddyy.dsproxy.listener.logging.DefaultQueryLogEntryCreator;
@@ -17,7 +18,7 @@ public class InlineQueryLogEntryCreator extends DefaultQueryLogEntryCreator {
     public String getLogEntry(ExecutionInfo execInfo, List<QueryInfo> queryInfoList,
             boolean writeDataSourceName, boolean writeConnectionId) {
         String logEntry = super.getLogEntry(execInfo, queryInfoList, writeDataSourceName, writeConnectionId);
-        queue.add("InlineQueryLogEntryCreator", "getLogEntry", logEntry);
+        queue.add(LogType.INLINE_QUERY_LOGENTRY_CREATOR, "InlineQueryLogEntryCreator", "getLogEntry", logEntry);
         return logEntry;
     }
 

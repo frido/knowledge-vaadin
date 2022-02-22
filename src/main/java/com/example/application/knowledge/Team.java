@@ -14,7 +14,9 @@ import javax.persistence.Table;
 public class Team {
     @Id
     private int id;
+
     private String name;
+
     @OneToMany(
         cascade = CascadeType.ALL, // TODO: asi nepotrebujem, staci iba mappedBy
         orphanRemoval = true,
@@ -48,11 +50,8 @@ public class Team {
     }
 
     @Override
-    public String  toString() {
-        return "Team " + getJavaId() + " {" +
-            " id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            "}";
+    public String toString() {
+        return "Team"+ getId() + getJavaId();
     }
 
     private String getJavaId() {

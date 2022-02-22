@@ -1,5 +1,6 @@
 package com.example.application.knowledge;
 
+import com.example.application.views.knowledge.LogType;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metamodel.model.domain.NavigableRole;
 import org.hibernate.stat.internal.StatisticsImpl;
@@ -25,11 +26,11 @@ public class CustomStatisticsImpl extends StatisticsImpl {
     }
 
     private void add(String method, String msg) {
-        queue.add("CustomStatisticsImpl", method, msg);
+        queue.add(LogType.CUSTOM_STATISTICS_IMPL, "CustomStatisticsImpl", method, msg);
     }
 
     private void add(String method) {
-        queue.add("CustomStatisticsImpl", method, null);
+        queue.add(LogType.CUSTOM_STATISTICS_IMPL, "CustomStatisticsImpl", method, null);
     }
 
     @Override

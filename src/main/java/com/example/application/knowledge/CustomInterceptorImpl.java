@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import com.example.application.views.knowledge.LogType;
 import org.hibernate.CallbackException;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.EntityMode;
@@ -20,7 +20,7 @@ public class CustomInterceptorImpl extends EmptyInterceptor {
     private transient MessageQueue queue = MessageQueue.getInstance();
 
     private void add(String method, Object payload) {
-        queue.add("CustomInterceptorImpl", method, String.valueOf(payload));
+        queue.add(LogType.CUSTOM_INTERCEPTOR_IMPL, "CustomInterceptorImpl", method, String.valueOf(payload));
     }
 
     @Override

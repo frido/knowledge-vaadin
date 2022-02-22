@@ -32,10 +32,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item " + getJavaId() + " {" +
-            " id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            "}";
+        return "Item"+ getId() + getJavaId();
     }
 
     private String getJavaId() {

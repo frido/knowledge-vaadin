@@ -14,7 +14,9 @@ import org.hibernate.annotations.Immutable;
 public class Car {
     @Id
     private int id;
+
     private String spz;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
@@ -45,11 +47,11 @@ public class Car {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", spz='" + getSpz() + "'" +
-            ", person='" + getPerson() + "'" +
-            "}";
+        return "Car"+ getId() + getJavaId();
+    }
+
+    private String getJavaId() {
+        return super.toString().substring(super.toString().indexOf("@"));
     }
 
 

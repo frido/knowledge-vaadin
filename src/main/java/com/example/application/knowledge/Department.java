@@ -18,11 +18,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class Department implements IDepartment {
     @Id
     private int id;
+
     private String name;
+    
     @OneToMany(
         cascade = CascadeType.ALL,  // TODO: asi nepotrebujem, staci iba mappedBy
         orphanRemoval = true,
@@ -30,4 +31,13 @@ public class Department implements IDepartment {
         mappedBy = "department"
     )
     private List<Person> persons;
+
+    @Override
+    public String toString() {
+        return "Department"+ getId() + getJavaId();
+    }
+
+    private String getJavaId() {
+        return super.toString().substring(super.toString().indexOf("@"));
+    }
 }

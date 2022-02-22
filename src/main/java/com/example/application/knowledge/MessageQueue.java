@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import com.example.application.views.knowledge.LogType;
 
 public class MessageQueue {
 
@@ -21,16 +22,8 @@ public class MessageQueue {
         return INSTANCE;
     }
 
-    // public List<EventRow> poolAll() {
-    //     List<EventRow> list = new ArrayList<>();
-    //     queue.forEach(list::add);
-    //     queue.clear();
-    //     Collections.reverse(list);
-    //     return list;
-    // }
-
-    public void add(String object, String method, String payload) {
-        EventRow event = new EventRow(counter.getAndIncrement(), object, method, payload);
+    public void add(LogType type, String object, String method, String payload) {
+        EventRow event = new EventRow(type, counter.getAndIncrement(), object, method, payload);
         callListeners(event);
     }
 

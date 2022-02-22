@@ -18,6 +18,7 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -47,12 +48,15 @@ public class KnowledgeView extends Div {
     private VerticalLayout buttonPanel;
 
     Grid<EventRow> grid = new Grid<>(EventRow.class);
-    List<EventRow> items = new ArrayList<>();
-    ComboBox<String> eventFilter = new ComboBox<>();
+    transient List<EventRow> items = new ArrayList<>();
+    CheckboxGroup<LogType> checkboxGroup = new CheckboxGroup<>();
+    
     private UI ui;
 
     public KnowledgeView(@Autowired EntityService service) { 
         this.service = service;
+
+        checkboxGroup.setItems(LogType.values());
 
         buttonPanel = new VerticalLayout();
         buttonPanel.add(new SimplePersonView(service));
@@ -90,21 +94,12 @@ public class KnowledgeView extends Div {
         main.add(buttonPanel, infoPanel);
         add(main);
 
-        grid.setColumns("id", "object", "method");
+        grid.setColumns("id", "object", "method", "payload");
         grid.getColumns().forEach(x -> x.setAutoWidth(true));
         grid.setSelectionMode(Grid.SelectionMode.NONE);
         grid.setItemDetailsRenderer(TemplateRenderer.<EventRow>of("[[item.payload]]").withProperty("payload", EventRow::getPayload));
         var clearGridBtn = new Button("Clear", this::onClearGrid);
-        infoPanel.add(clearGridBtn, eventFilter, grid);
-
-        eventFilter.addValueChangeListener(x -> {
-            if (x.getValue() == null) {
-                grid.setItems(items);
-            } else {
-                grid.setItems(items.stream().filter(i -> i.getObject().compareTo(x.getValue()) == 0).collect(Collectors.toList()));
-            }
-        grid.getDataProvider().refreshAll();
-        });
+        infoPanel.add(clearGridBtn, checkboxGroup, grid);
 
         messageQueue.addListener(this::onNewMessage);
 
@@ -142,10 +137,10 @@ public class KnowledgeView extends Div {
 
     private void onNewMessage(EventRow event) {
         ui.access(() -> {
+            if (!checkboxGroup.getSelectedItems().contains(event.getType())) {
+                return;
+            }
             items.add(0, event);
-
-            Set<String> objects = items.stream().map(o -> o.getObject()).collect(Collectors.toSet());
-            eventFilter.setItems(objects);
 
             grid.setItems(items);
             grid.getDataProvider().refreshAll();

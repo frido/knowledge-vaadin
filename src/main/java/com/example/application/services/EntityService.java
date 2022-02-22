@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
+import com.example.application.knowledge.Car;
 import com.example.application.knowledge.Item;
 import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonDtoLombok;
@@ -142,6 +143,24 @@ public class EntityService {
     public void onEditAllPersons() {
         List<Person> persons = findAll(Person.class);
         persons.forEach(p -> p.setName(randomText()));
+    }
+
+    @Transactional
+    public void onAddCarToPerson() {
+        Person person = find(Person.class);
+        Car car = new Car();
+        car.setSpz(randomText());
+        person.getCars().add(car);
+        person.setName(randomText());
+
+        System.out.println("person:" + person.getCars().stream().map(Car::toString).toList());
+        System.out.println("car:" + car);
+
+        Person person2 = find(Person.class);
+        System.out.println("person2:" + person2.getCars().stream().map(Car::toString).toList());
+
+        List<Car> cars = findAll(Car.class);
+        System.out.println("cars:" + cars.stream().map(Car::toString).toList());
     }
 
     public void runBatch(Runnable runnable, int batchSize) {

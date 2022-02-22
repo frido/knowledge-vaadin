@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Praca2",
+            "request": "launch",
+            "mainClass": "com.example.application.Praca2",
+            "projectName": "vaadin"
+        },
+        {
+            "type": "java",
             "name": "Launch Praca",
             "request": "launch",
             "mainClass": "com.example.application.Praca",

@@ -26,6 +26,18 @@ public class Message implements Comparable{
         setSorter();
     }
 
+    
+    public Message(String type, String place, String action, String level, String line, String ctrlname, String formname, String msg) {
+        this.type = type;
+        this.place = place;
+        this.action = action;
+        this.level = level;
+        this.line = line;
+        this.ctrlname = ctrlname;
+        this.formname = formname;
+        this.msg = msg;
+    }
+
     private void setSorter() {
         if (type.equals("p")) {
             sorter = 1;
@@ -50,7 +62,7 @@ public class Message implements Comparable{
         } else if (type.equals("s")) {
             return "service";
         } else {
-            return "other";
+            return "validation";
         }
     }
 

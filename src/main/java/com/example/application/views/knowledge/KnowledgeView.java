@@ -61,6 +61,7 @@ public class KnowledgeView extends Div {
         var merge2 = new HorizontalLayout();
         var merge3 = new HorizontalLayout();
         var merge4 = new HorizontalLayout();
+        var merge5 = new HorizontalLayout();
         var loadPersonVersionBtn = new Button("Load Person Version", this::onLoadPersonVersion);
         var changePersonVersionBtn = new Button("Change Person Version", this::onChangePersonVersion);
         var mergePersonVersionBtn = new Button("Merge Person Version", this::onMergePersonVersion);
@@ -69,12 +70,16 @@ public class KnowledgeView extends Div {
         var editAllPersons = new Button("Edit All Persons", this::onEditAllPersons);
         var editAllPersonsBatch = new Button("Edit All Persons Batch", this::onEditAllPersonsBatch); // TODO configurable batch size
 
+
+        var addCar = new Button("Add car", this::onAddCar);
+
         var testing = new Button("Testing", this::testing);
 
         merge2.add(loadPersonVersionBtn, changePersonVersionBtn, mergePersonVersionBtn);
         merge3.add(editPersonInServiceBtn, editPersonOutServiceBtn);
         merge4.add(editAllPersons, editAllPersonsBatch);
-        buttonPanel.add(merge1, personWithVersionLabel, merge2, personLabel, merge3, merge4, testing);
+        merge5.add(addCar);
+        buttonPanel.add(merge1, personWithVersionLabel, merge2, personLabel, merge3, merge4, testing, merge5);
 
         infoPanel = new VerticalLayout();
         infoPanel.setPadding(false);
@@ -174,6 +179,11 @@ public class KnowledgeView extends Div {
     private void onEditAllPersons(ClickEvent<Button> event) {
         clean();
         service.onEditAllPersons();
+    }
+
+    private void onAddCar(ClickEvent<Button> event) {
+        clean();
+        service.onAddCarToPerson();
     }
 
     private void onEditAllPersonsBatch(ClickEvent<Button> event) {

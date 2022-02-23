@@ -104,11 +104,6 @@ public class Person {
         return id == person.id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
     @PostLoad
     public void postLoad() {
 //        TODO: generic base class with all listeners

@@ -2,6 +2,7 @@ package com.example.application.services;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
@@ -20,11 +21,14 @@ import com.example.application.knowledge.PersonWithVersion;
 import com.example.application.knowledge.Person_;
 import com.example.application.views.knowledge.LogType;
 import org.hibernate.Session;
+import org.hibernate.engine.spi.EntityEntry;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -36,6 +40,9 @@ public class EntityService {
 
     @Autowired
     TransactionalService transactionalService;
+
+    @Autowired
+    EntityNewService newService;
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -169,6 +176,59 @@ public class EntityService {
         List<Car> cars = findAll(Car.class);
         log(className, "cars:" + cars.stream().map(Car::toString).toList());
     }
+
+    @Transactional
+    public void clearPersistentContext() {
+        var person = find(PersonWithVersion.class);
+        var cars = findAll(Car.class);
+        var className = "clearPersistentContext";
+        
+        log(className, "before flush 1");
+        em.flush();
+        log(className, "after flush 1");
+        
+        log(className, "before clear");
+        em.clear();
+        log(className, "after clear");
+        
+        log(className, "before flush 2");
+        em.flush();
+        log(className, "after flush 2");
+
+        log(className, "before find");
+        var person2 = find(PersonWithVersion.class);
+        log(className, "after find");
+
+        log(className, EntityHelper.managetEntities(em));
+
+        log(className, "before clear 2");
+        em.clear();
+        log(className, "after clear 2");
+
+        log(className, EntityHelper.managetEntities(em));
+
+        person2.setName(randomText());
+        em.merge(person2);
+        
+    }
+
+    @Transactional(readOnly = true)
+    public void reaOnlyTransaction() {
+        var person = find(PersonWithVersion.class);
+        var cars = findAll(Car.class);
+        person.setName(randomText());
+        var action = "reaOnlyTransaction";
+        log(action, String.valueOf(em));
+        SessionImplementor session = em.unwrap( SessionImplementor.class );
+        String msg = "";
+        for(Map.Entry<Object,EntityEntry> x : session.getPersistenceContext().reentrantSafeEntityEntries()) {
+            msg = msg + ", " + String.valueOf(x.getKey());
+        }
+        log(action, msg);
+        newService.reaOnlyTransaction2(person);
+    }
+
+
 
     public void runBatch(Runnable runnable, int batchSize) {
         var hibernateSession = em.unwrap(Session.class);

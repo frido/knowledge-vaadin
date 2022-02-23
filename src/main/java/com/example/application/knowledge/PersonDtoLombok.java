@@ -2,7 +2,6 @@ package com.example.application.knowledge;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Builder

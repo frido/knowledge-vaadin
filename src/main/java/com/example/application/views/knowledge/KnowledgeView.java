@@ -65,10 +65,11 @@ public class KnowledgeView extends Div {
         var editPersonInServiceBtn = new Button("Edit Person In Service", this::onEditPersonInService);
         var editPersonOutServiceBtn = new Button("Edit Person Out Service", this::onEditPersonOutService);
         var editAllPersons = new Button("Edit All Persons", this::onEditAllPersons);
-        var editAllPersonsBatch = new Button("Edit All Persons Batch", this::onEditAllPersonsBatch); // TODO configurable batch size
-
-
+        var editAllPersonsBatch = new Button("Edit All Persons Batch", this::onEditAllPersonsBatch);
         var addCar = new Button("Add car", this::onAddCar);
+        var clearPersistentContext = new Button("Clear", this::clearPersistentContext);
+        var reaOnlyTransaction = new Button("reaOnlyTransaction", this::reaOnlyTransaction);
+        
 
         var testing = new Button("Testing", this::testing);
 
@@ -76,6 +77,8 @@ public class KnowledgeView extends Div {
         merge3.add(editPersonInServiceBtn, editPersonOutServiceBtn);
         merge4.add(editAllPersons, editAllPersonsBatch);
         merge5.add(addCar);
+        merge5.add(clearPersistentContext);
+        merge5.add(reaOnlyTransaction);
         buttonPanel.add(merge1, personWithVersionLabel, merge2, personLabel, merge3, merge4, testing, merge5);
 
         infoPanel = new VerticalLayout();
@@ -166,6 +169,14 @@ public class KnowledgeView extends Div {
     private void onAddCar(ClickEvent<Button> event) {
         clean();
         service.onAddCarToPerson();
+    }
+
+    private void clearPersistentContext(ClickEvent<Button> event) {
+        service.clearPersistentContext();
+    }
+
+    private void reaOnlyTransaction(ClickEvent<Button> event) {
+        service.reaOnlyTransaction();
     }
 
     private void onEditAllPersonsBatch(ClickEvent<Button> event) {

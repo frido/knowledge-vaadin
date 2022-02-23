@@ -178,7 +178,8 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onPostLoad(PostLoadEvent event) {
-        add("onPostLoad", event);
+        add("onPostLoad", String.format("%s", 
+        event.getEntity()));
         
     }
 
@@ -202,7 +203,9 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onPreLoad(PreLoadEvent event) {
-        add("onPreLoad", event);
+        add("onPreLoad", String.format("%s, %s", 
+        event.getState(),
+        event.getEntity()));
         
     }
 
@@ -285,7 +288,12 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onLoad(LoadEvent event, LoadType loadType) throws HibernateException {
-        add("onLoad", event);
+        add("onLoad", String.format("%s, %s, %s, %s, %s", 
+        event.getInstanceToLoad(),
+        event.getLockMode(),
+        event.getLockOptions(),
+        event.getReadOnly(),
+        event.getResult()));
         
     }
 
@@ -309,13 +317,16 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onAutoFlush(AutoFlushEvent event) throws HibernateException {
-        add("onAutoFlush", event);
+        EventHolder eh = new EventHolder();
+        eh.add("getNumberOfCollectionsProcessed", event.getNumberOfCollectionsProcessed());
+        eh.add("getNumberOfEntitiesProcessed", event.getNumberOfEntitiesProcessed());
+        add("onAutoFlush", eh);
         
     }
 
     @Override
     public void onClear(ClearEvent event) {
-        add("onClear", event);
+        add("onClear", "nothing");
         
     }
     

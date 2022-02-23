@@ -159,6 +159,7 @@ public class KnowledgeView extends Div {
         personEntity = service.find(Person.class);
         personEntity.setName("edited out service");
         personLabel.setText(String.valueOf(personEntity));
+        service.merge(personEntity);
     }
 
     private void onEditAllPersons(ClickEvent<Button> event) {

@@ -12,7 +12,7 @@ import net.ttddyy.dsproxy.listener.logging.DefaultQueryLogEntryCreator;
 
 public class InlineQueryLogEntryCreator extends DefaultQueryLogEntryCreator {
 
-    private transient MessageQueue queue = MessageQueue.getInstance();
+    private MessageQueue queue = MessageQueue.getInstance();
 
     @Override
     public String getLogEntry(ExecutionInfo execInfo, List<QueryInfo> queryInfoList,

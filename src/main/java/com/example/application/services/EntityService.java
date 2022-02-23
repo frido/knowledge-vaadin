@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -51,7 +50,7 @@ public class EntityService {
         return em;
     }
 
-    @Transactional // TODO: nerozumiem na co to tu je
+    @Transactional
     public <T> T save(T entity) {
         return em.merge(entity);
     }
@@ -86,12 +85,11 @@ public class EntityService {
         return em.merge(entity);
     }
 
-    @Transactional // NOTE: not the same as find without transactional
+    @Transactional
     public Person findPersonTree() {
         Person person = em.find(Person.class, 1);
-        person.getTeam(); // NOTE: toto nestaci
-        transactionalService.getTeamNameRequired(person); // NOTE: musim zavolat toto aby sa to
-                                                          // nacitalo
+        person.getTeam(); 
+        transactionalService.getTeamNameRequired(person);
         for (Item item : person.getItems()) {
             System.out.println(item);
         }

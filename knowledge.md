@@ -70,6 +70,9 @@ Ked vsak entita este nie je v sete tak nevadi ked sa jej meni ID.
 
 **Figure out more about it**
 
+TODO !!!
+### SPISAT clearPersistentContext a reaOnlyTransaction
+
 ## Cache
 
 Aku guava chage to pouzivame v projekte? Pohladat slova cache a ako rozne ju mame implementovany

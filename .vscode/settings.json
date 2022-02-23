@@ -1,5 +1,4 @@
 {
-    "java.checkstyle.configuration": "/google_checks.xml",
     "sqltools.connections": [
         {
             "mysqlOptions": {
@@ -15,5 +14,7 @@
             "password": "root"
         }
     ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "sonarlint.disableTelemetry": true,
+    "sonarlint.output.showAnalyzerLogs": true
 }

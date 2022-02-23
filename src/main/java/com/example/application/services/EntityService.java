@@ -158,16 +158,16 @@ public class EntityService {
         car.setSpz(randomText());
         person.getCars().add(car);
         person.setName(randomText());
-
+        var className = "onAddCarToPerson";
         
-        log("onAddCarToPerson", "person:" + person.getCars().stream().map(Car::toString).toList());
-        log("onAddCarToPerson", "car:" + car);
+        log(className, "person:" + person.getCars().stream().map(Car::toString).toList());
+        log(className, "car:" + car);
 
         Person person2 = find(Person.class);
-        log("onAddCarToPerson", "person2:" + person2.getCars().stream().map(Car::toString).toList());
+        log(className, "person2:" + person2.getCars().stream().map(Car::toString).toList());
 
         List<Car> cars = findAll(Car.class);
-        log("onAddCarToPerson", "cars:" + cars.stream().map(Car::toString).toList());
+        log(className, "cars:" + cars.stream().map(Car::toString).toList());
     }
 
     public void runBatch(Runnable runnable, int batchSize) {
@@ -195,11 +195,7 @@ public class EntityService {
     public void testing() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO:
-                                                                                       // prepinatelne
-                                                                                       // ako
-                                                                                       // parameter
-        // definition.setTimeout(3);
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         person1.setName("changed in 1 transaction");
@@ -215,19 +211,10 @@ public class EntityService {
         transactionManager.commit(status1);
     }
 
-    private Person findAndEdit2() {
-        var person = em.find(Person.class, 1);
-        person.setName("edited in service");
-        return person;
-    }
-
     public void testing2() throws InterruptedException {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // TODO:
-                                                                                           // prepinatelne
-                                                                                           // ako
-                                                                                           // parameter
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         person1.setName("XXX");
@@ -239,10 +226,7 @@ public class EntityService {
     public Person testing3() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
-        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED); // TODO:
-                                                                                       // prepinatelne
-                                                                                       // ako
-                                                                                       // parameter
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status1 = transactionManager.getTransaction(definition);
         var person1 = em.find(Person.class, 1);
         transactionManager.commit(status1);

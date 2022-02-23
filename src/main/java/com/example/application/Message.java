@@ -3,7 +3,7 @@ package com.example.application;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Message implements Comparable{
+public class Message implements Comparable<Message>{
     private String type;
     private String place;
     private String action;
@@ -71,9 +71,6 @@ public class Message implements Comparable{
         Pattern pattern = Pattern.compile("(.+) ?= ?(.+)\\.label.+, ?\"(.+)\"");
         Matcher matcher = pattern.matcher(line);
         if (matcher.find()) {
-            // System.out.println("-1- " + matcher.group(1));
-            // System.out.println("-2- " + matcher.group(2));
-            // System.out.println("-3- " + matcher.group(3));
             ctrlname = matcher.group(1).trim();
             formname = matcher.group(2).trim();
             msg = matcher.group(3).trim();
@@ -126,8 +123,7 @@ public class Message implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        Message that = (Message) o;
+    public int compareTo(Message that) {
         int com = Integer.compare(this.sorter, that.getSorter());
         if (com == 0) {
             com = compareString(place, that.getPlace());
@@ -142,6 +138,16 @@ public class Message implements Comparable{
             }
         }
         return com;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    } 
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     private int compareString(String thisOne, String that) {

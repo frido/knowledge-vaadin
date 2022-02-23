@@ -3,14 +3,10 @@ package com.example.application.views.knowledge;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import com.example.application.knowledge.Department;
 import com.example.application.knowledge.EventRow;
 import com.example.application.knowledge.MessageQueue;
 import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonWithVersion;
-import com.example.application.knowledge.Team;
 import com.example.application.services.EntityService;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.AttachEvent;
@@ -19,7 +15,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
@@ -41,8 +36,6 @@ public class KnowledgeView extends Div {
     private VerticalLayout infoPanel;
     private transient Person personEntity;
     private transient PersonWithVersion personWithVersionEntity;
-    private transient Department departmentEntity;
-    private transient Team teamEntity;
     private Label personLabel = new Label();
     private Label personWithVersionLabel = new Label();
     private VerticalLayout buttonPanel;
@@ -106,25 +99,19 @@ public class KnowledgeView extends Div {
         Button tBtn = new Button("Thread");
 
         tBtn.addClickListener( x -> {
-            new Thread(new Runnable(){
-
-                private int count = 0;
-    
-                @Override
-                public void run() {
-                    ui.access(() -> {
-                        tBtn.setEnabled(false);
-                    });
-                    try {
-                        service.testing2();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    count++;
-                    ui.access(() -> {
-                        tBtn.setEnabled(true);
-                    });
+            new Thread(() -> {
+                ui.access(() -> {
+                    tBtn.setEnabled(false);
+                });
+                try {
+                    service.testing2();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
+                ui.access(() -> {
+                    tBtn.setEnabled(true);
+                });
             }).start();
         });
         buttonPanel.add(tBtn);

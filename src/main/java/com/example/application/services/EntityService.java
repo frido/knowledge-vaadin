@@ -210,6 +210,7 @@ public class EntityService {
         
     }
 
+    @java.lang.SuppressWarnings({"squid:S1854", "java:S1481"})
     @Transactional(readOnly = true)
     public void reaOnlyTransaction() {
         var person = find(PersonWithVersion.class);

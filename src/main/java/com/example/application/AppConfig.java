@@ -1,5 +1,6 @@
 package com.example.application;
 
+import java.sql.Connection;
 import java.util.Properties;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -30,6 +31,11 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 @PropertySource(value = { "classpath:jdbc.properties", "classpath:application.properties" })
 @EnableTransactionManagement
 public class AppConfig {
+    @Bean
+    public CustomInterceptorImpl customInterceptorImpl() {
+        return new CustomInterceptorImpl();
+    }
+
     @Bean
     public DataSource dataSource(@Autowired Environment env) {
         SLF4JQueryLoggingListener listener = new SLF4JQueryLoggingListener();

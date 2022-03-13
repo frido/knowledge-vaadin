@@ -73,11 +73,11 @@ Ked vsak entita este nie je v sete tak nevadi ked sa jej meni ID.
 ### Persistent context transaction scope
 
 flush spusta *checkDirty* aby zistil ktore entity treba updatnut. Toto moze zabrat naozaj vela casu ked je entityManager plny manazovanych entit.
-Clear detachne vsetky entity v persistentnom contexte a flush nemusi nic kontrolovat. (Clear by sa mal volat aj po sql updatoch aby si persistentny context nedrzal neaktualne entity).
+*Clear* detachne vsetky entity v persistentnom contexte a *flush* nemusi nic kontrolovat. (Clear by sa mal volat aj po sql updatoch aby si persistentny context nedrzal neaktualne entity).
 Clear zmaze cache, takze entity treba opat loadnut z DB.
 Mergnutie detachnutej entity do prazdneho contextu sposobi select na kontrolu novej entity voci DB. Takze mergnutie detachnutej entity spravi select a nasledne pripadny update.
 Persistentny context udrzuje entity len v ramci transakcie. Pri novej transakcii je entity manager prazdny, bez managovanych entit.
-Nacitaine entity v service, vratit ju do view a nasledne ju mergnut v inom service sposobi ze entita je mergnuta do persistentneho contextu ktory ju nepozna a teda je potrebny select sql a az potom pripadny update sql (velmi neprakticne), preto by entity nemali opustat transakciu (servisnu metodu).
+Nacitanie entity v service, vratit ju do view a nasledne ju mergnut v inom service sposobi ze entita je mergnuta do persistentneho contextu ktory ju nepozna a teda je potrebny select sql a az potom pripadny update sql (velmi neprakticke), preto by entity nemali opustat transakciu (servisnu metodu).
 
 ## Cache
 

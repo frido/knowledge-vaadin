@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import com.example.application.knowledge.Person;
 import org.hibernate.Session;
 import org.junit.Test;

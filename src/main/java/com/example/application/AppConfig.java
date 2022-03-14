@@ -85,6 +85,7 @@ public class AppConfig {
         properties.put("hibernate.order_inserts", "true");
         properties.put("hibernate.order_updates", "true");
         properties.put("hibernate.generate_statistics", "true");
+        properties.put("javax.persistence.lock.timeout", 1L);
         properties.put("hibernate.integrator_provider", new CustomIntegratorProvider());
         entityManagerFactoryBean.setJpaProperties(properties);
 

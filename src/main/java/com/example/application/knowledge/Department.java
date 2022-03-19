@@ -24,7 +24,7 @@ public class Department implements IDepartment {
     private String name;
     
     @OneToMany(
-        cascade = CascadeType.ALL,  // TODO: asi nepotrebujem, staci iba mappedBy
+        cascade = CascadeType.ALL,
         orphanRemoval = true,
         fetch = FetchType.EAGER,
         mappedBy = "department"

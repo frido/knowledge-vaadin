@@ -105,7 +105,7 @@ public class TransactionIsolationTest {
             variables.put(PERSON_BEFORE_TX, personBeforeTx.getName());
 
             doInTransaction(em2, () -> {
-                Person personTx2 = em2.find(Person.class, 1);
+                Person personTx2 = em2.find(Person.class, 1, LockModeType.OPTIMISTIC);
                 personTx2.setName(LocalDateTime.now().toString());
                 variables.put(PERSON_TX2, personTx2.getName());
                 em2.merge(personTx2);

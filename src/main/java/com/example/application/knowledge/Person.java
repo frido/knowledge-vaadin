@@ -1,6 +1,7 @@
 package com.example.application.knowledge;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -102,6 +103,13 @@ public class Person {
         Person person = (Person) o;
         return id == person.id;
     }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, department, team, items, cars);
+    }
+
 
     @PostLoad
     public void postLoad() {

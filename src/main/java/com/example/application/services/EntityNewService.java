@@ -1,11 +1,9 @@
 package com.example.application.services;
 
-import java.util.ArrayList;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import com.example.application.knowledge.MessageQueue;
-import com.example.application.knowledge.Person;
 import com.example.application.knowledge.PersonWithVersion;
 import com.example.application.views.knowledge.LogType;
 import org.hibernate.engine.spi.EntityEntry;
@@ -24,11 +22,12 @@ public class EntityNewService {
         var action = "reaOnlyTransaction2";
         log(action, String.valueOf(em));
         SessionImplementor session = em.unwrap( SessionImplementor.class );
-        String msg = "";
+        StringBuilder msg = new StringBuilder();
         for(Map.Entry<Object,EntityEntry> x : session.getPersistenceContext().reentrantSafeEntityEntries()) {
-            msg = msg + ", " + String.valueOf(x.getKey());
+            msg.append(", ");
+            msg.append(String.valueOf(x.getKey()));
         }
-        log(action, msg);
+        log(action, msg.toString());
         em.merge(person);
         em.flush();
     }

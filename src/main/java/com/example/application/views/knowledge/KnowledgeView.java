@@ -43,10 +43,10 @@ public class KnowledgeView extends Div {
     Grid<EventRow> grid = new Grid<>(EventRow.class);
     transient List<EventRow> items = new ArrayList<>();
     CheckboxGroup<LogType> checkboxGroup = new CheckboxGroup<>();
-    
+
     private UI ui;
 
-    public KnowledgeView(@Autowired EntityService service) { 
+    public KnowledgeView(@Autowired EntityService service) {
         this.service = service;
 
         checkboxGroup.setItems(LogType.values());
@@ -60,16 +60,19 @@ public class KnowledgeView extends Div {
         var merge4 = new HorizontalLayout();
         var merge5 = new HorizontalLayout();
         var loadPersonVersionBtn = new Button("Load Person Version", this::onLoadPersonVersion);
-        var changePersonVersionBtn = new Button("Change Person Version", this::onChangePersonVersion);
+        var changePersonVersionBtn =
+                new Button("Change Person Version", this::onChangePersonVersion);
         var mergePersonVersionBtn = new Button("Merge Person Version", this::onMergePersonVersion);
-        var editPersonInServiceBtn = new Button("Edit Person In Service", this::onEditPersonInService);
-        var editPersonOutServiceBtn = new Button("Edit Person Out Service", this::onEditPersonOutService);
+        var editPersonInServiceBtn =
+                new Button("Edit Person In Service", this::onEditPersonInService);
+        var editPersonOutServiceBtn =
+                new Button("Edit Person Out Service", this::onEditPersonOutService);
         var editAllPersons = new Button("Edit All Persons", this::onEditAllPersons);
         var editAllPersonsBatch = new Button("Edit All Persons Batch", this::onEditAllPersonsBatch);
         var addCar = new Button("Add car", this::onAddCar);
         var clearPersistentContext = new Button("Clear", this::clearPersistentContext);
         var reaOnlyTransaction = new Button("reaOnlyTransaction", this::reaOnlyTransaction);
-        
+
 
         var testing = new Button("Testing", this::testing);
 
@@ -79,7 +82,8 @@ public class KnowledgeView extends Div {
         merge5.add(addCar);
         merge5.add(clearPersistentContext);
         merge5.add(reaOnlyTransaction);
-        buttonPanel.add(merge1, personWithVersionLabel, merge2, personLabel, merge3, merge4, testing, merge5);
+        buttonPanel.add(merge1, personWithVersionLabel, merge2, personLabel, merge3, merge4,
+                testing, merge5);
 
         infoPanel = new VerticalLayout();
         infoPanel.setPadding(false);
@@ -93,7 +97,8 @@ public class KnowledgeView extends Div {
         grid.setColumns("id", "object", "method", "payload");
         grid.getColumns().forEach(x -> x.setAutoWidth(true));
         grid.setSelectionMode(Grid.SelectionMode.NONE);
-        grid.setItemDetailsRenderer(TemplateRenderer.<EventRow>of("[[item.payload]]").withProperty("payload", EventRow::getPayload));
+        grid.setItemDetailsRenderer(TemplateRenderer.<EventRow>of("[[item.payload]]")
+                .withProperty("payload", EventRow::getPayload));
         var clearGridBtn = new Button("Clear", this::onClearGrid);
         infoPanel.add(clearGridBtn, checkboxGroup, grid);
 
@@ -101,22 +106,16 @@ public class KnowledgeView extends Div {
 
         Button tBtn = new Button("Thread");
 
-        tBtn.addClickListener( x -> {
-            new Thread(() -> {
-                ui.access(() -> {
-                    tBtn.setEnabled(false);
-                });
-                try {
-                    service.testing2();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Thread.currentThread().interrupt();
-                }
-                ui.access(() -> {
-                    tBtn.setEnabled(true);
-                });
-            }).start();
-        });
+        tBtn.addClickListener(x -> new Thread(() -> {
+            ui.access(() -> tBtn.setEnabled(false));
+            try {
+                service.testing2();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();
+            }
+            ui.access(() -> tBtn.setEnabled(true));
+        }).start());
         buttonPanel.add(tBtn);
     }
 
@@ -198,8 +197,8 @@ public class KnowledgeView extends Div {
 
     private void onMergePersonVersion(ClickEvent<Button> event) {
         try {
-        personWithVersionEntity.setName(randomText());
-        service.merge(personWithVersionEntity);
+            personWithVersionEntity.setName(randomText());
+            service.merge(personWithVersionEntity);
         } catch (Exception e) {
             Notification.show(e.getMessage());
         }

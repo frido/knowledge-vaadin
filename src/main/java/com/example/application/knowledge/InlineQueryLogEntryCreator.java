@@ -10,6 +10,7 @@ import net.ttddyy.dsproxy.ExecutionInfo;
 import net.ttddyy.dsproxy.QueryInfo;
 import net.ttddyy.dsproxy.listener.logging.DefaultQueryLogEntryCreator;
 
+@SuppressWarnings("deprecation")
 public class InlineQueryLogEntryCreator extends DefaultQueryLogEntryCreator {
 
     private MessageQueue queue = MessageQueue.getInstance();
@@ -59,6 +60,7 @@ public class InlineQueryLogEntryCreator extends DefaultQueryLogEntryCreator {
         sb.append("]");
     }
 
+    @SuppressWarnings("java:S6201")
     private String arrayToString(Object object) {
         if (object.getClass().isArray()) {
             if (object instanceof byte[]) {

@@ -66,6 +66,7 @@ import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.hibernate.event.spi.SaveOrUpdateEventListener;
 import org.hibernate.persister.entity.EntityPersister;
 
+@SuppressWarnings("rawtypes")
 public class CustomMergeEventListener implements MergeEventListener ,
 ClearEventListener,
 AutoFlushEventListener,
@@ -98,6 +99,10 @@ PostCollectionRemoveEventListener,
 PostCollectionUpdateEventListener
 {
 
+    /**
+     *
+     */
+    private static final String S_S_S_S_S = "%s, %s, %s, %s, %s";
     private transient MessageQueue queue = MessageQueue.getInstance(); 
 
     private void add(String method, Object event) {
@@ -106,13 +111,13 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onMerge(MergeEvent event) throws HibernateException {
-        add("onMerge1", String.format("%s, %s, %s, %s, %s", event.getClass(), event.getEntity(), event.getEntityName(), event.getOriginal(),
+        add("onMerge1", String.format(S_S_S_S_S, event.getClass(), event.getEntity(), event.getEntityName(), event.getOriginal(),
         event.getResult()));
     }
 
     @Override
     public void onMerge(MergeEvent event, Map copiedAlready) throws HibernateException {
-        add("onMerge1", String.format("%s, %s, %s, %s, %s", event.getClass(), event.getEntity(), event.getEntityName(), event.getOriginal(),
+        add("onMerge1", String.format(S_S_S_S_S, event.getClass(), event.getEntity(), event.getEntityName(), event.getOriginal(),
         event.getResult()));
     }
 
@@ -262,10 +267,10 @@ PostCollectionUpdateEventListener
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onPersist(PersistEvent event, Map createdAlready) throws HibernateException {
         add("onPersist", String.format("%s -- %s", event.getObject(), 
-         createdAlready.entrySet().stream().map(String::valueOf).toList()));
-        
+        createdAlready.entrySet().stream().map(String::valueOf).toList()));
     }
 
     @Override
@@ -288,7 +293,7 @@ PostCollectionUpdateEventListener
 
     @Override
     public void onLoad(LoadEvent event, LoadType loadType) throws HibernateException {
-        add("onLoad", String.format("%s, %s, %s, %s, %s", 
+        add("onLoad", String.format(S_S_S_S_S, 
         event.getInstanceToLoad(),
         event.getLockMode(),
         event.getLockOptions(),

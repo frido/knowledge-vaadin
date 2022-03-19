@@ -1,6 +1,5 @@
 package com.example.application;
 
-import java.sql.Connection;
 import java.util.Properties;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;

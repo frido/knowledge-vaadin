@@ -23,6 +23,8 @@ import com.example.application.views.knowledge.LogType;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -33,6 +35,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Service
 public class EntityService {
+
+    private static Logger log = LoggerFactory.getLogger(EntityService.class);
 
     @PersistenceContext
     EntityManager em;
@@ -91,7 +95,7 @@ public class EntityService {
         person.getTeam(); 
         transactionalService.getTeamNameRequired(person);
         for (Item item : person.getItems()) {
-            System.out.println(item);
+            log.info("%s", String.valueOf(item));
         }
         return person;
     }
@@ -177,8 +181,8 @@ public class EntityService {
 
     @Transactional
     public void clearPersistentContext() {
-        var person = find(PersonWithVersion.class);
-        var cars = findAll(Car.class);
+        find(PersonWithVersion.class);
+        findAll(Car.class);
         var className = "clearPersistentContext";
         
         log(className, "before flush 1");
@@ -214,16 +218,17 @@ public class EntityService {
     @Transactional(readOnly = true)
     public void reaOnlyTransaction() {
         var person = find(PersonWithVersion.class);
-        var cars = findAll(Car.class);
+        findAll(Car.class);
         person.setName(randomText());
         var action = "reaOnlyTransaction";
         log(action, String.valueOf(em));
         SessionImplementor session = em.unwrap( SessionImplementor.class );
-        String msg = "";
+        StringBuilder msg = new StringBuilder();
         for(Map.Entry<Object,EntityEntry> x : session.getPersistenceContext().reentrantSafeEntityEntries()) {
-            msg = msg + ", " + String.valueOf(x.getKey());
+            msg.append(", ");
+            msg.append(String.valueOf(x.getKey()));
         }
-        log(action, msg);
+        log(action, msg.toString());
         newService.reaOnlyTransaction2(person);
     }
 
@@ -250,7 +255,6 @@ public class EntityService {
         return LocalTime.now().toString();
     }
 
-    // TODO: propagation, pridat propagacne logy aby user vecer co sa deje
     public void testing() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
@@ -265,7 +269,7 @@ public class EntityService {
 
         transactionManager.commit(status2);
         var person3 = em.find(Person.class, 1);
-        System.out.println(person3);
+        log.info(String.valueOf(person3));
 
         transactionManager.commit(status1);
     }

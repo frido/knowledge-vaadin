@@ -13,6 +13,7 @@ import org.hibernate.type.Type;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("rawtypes")
 public class CustomInterceptorImpl extends EmptyInterceptor {
 
     static long serialVersionUID = 1l;

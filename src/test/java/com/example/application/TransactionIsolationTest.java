@@ -57,7 +57,7 @@ public class TransactionIsolationTest {
     private static final String PERSON_TX2 = "personNameTx2";
     private static final String PERSON_BEFORE_TX = "personNameTx1Before";
 
-    private static Logger log = LoggerFactory.getLogger(ConcurrentChangesTest.class);
+    private static Logger log = LoggerFactory.getLogger(LockTypeModeTest.class);
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;

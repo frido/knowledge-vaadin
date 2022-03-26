@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
 @ComponentScan(value = "com.example.application")
-public class ConcurrentChangesTest {
+public class LockTypeModeTest {
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;

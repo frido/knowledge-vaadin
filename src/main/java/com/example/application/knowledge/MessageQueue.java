@@ -11,7 +11,7 @@ public class MessageQueue {
 
     private AtomicInteger counter = new AtomicInteger(0);
     private static MessageQueue INSTANCE;
-    private LinkedBlockingQueue<EventRow> queue = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<EventRow> queue = new LinkedBlockingQueue<>(); // TODO: asi nepotrebujem
     private List<Consumer<EventRow>> listeners = new ArrayList<>();
 
     public static synchronized MessageQueue getInstance() {
@@ -35,6 +35,14 @@ public class MessageQueue {
     public void addListener(Consumer<EventRow> listener) {
         queue.forEach(listener);
         this.listeners.add(listener);
+    }
+
+    public void removeListener(Consumer<EventRow> listener) {
+        this.listeners.remove(listener);
+    }
+
+    public void clean() {
+        queue.clear();
     }
     
 }

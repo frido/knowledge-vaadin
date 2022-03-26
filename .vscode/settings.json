@@ -14,7 +14,7 @@
             "password": "root"
         }
     ],
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
     "sonarlint.disableTelemetry": true,
     "sonarlint.output.showAnalyzerLogs": true
 }

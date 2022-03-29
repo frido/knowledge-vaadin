@@ -10,6 +10,8 @@ import com.example.application.knowledge.CustomStatisticsImpl;
 import com.example.application.knowledge.InlineQueryLogEntryCreator;
 import com.example.application.knowledge.MessageQueue;
 import com.example.application.views.knowledge.LogType;
+import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.metrics.MetricsTrackerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.stat.spi.StatisticsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,29 +32,40 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 @PropertySource(value = { "classpath:jdbc.properties", "classpath:application.properties" })
 @EnableTransactionManagement
 public class AppConfig {
-    @Bean
-    public CustomInterceptorImpl customInterceptorImpl() {
-        return new CustomInterceptorImpl();
-    }
+    // @Bean
+    // public CustomInterceptorImpl customInterceptorImpl() {
+    //     return new CustomInterceptorImpl();
+    // }
 
     @Bean
-    public DataSource dataSource(@Autowired Environment env) {
+    public DataSource dataSource(@Autowired Environment env, MetricsTrackerFactory factory) {
         SLF4JQueryLoggingListener listener = new SLF4JQueryLoggingListener();
         listener.setLogLevel(SLF4JLogLevel.INFO);
         listener.setQueryLogEntryCreator(new InlineQueryLogEntryCreator());
-        return ProxyDataSourceBuilder.create(realDataSource())
+        return ProxyDataSourceBuilder.create(realDataSource(factory))
         .name("xxx")
         .listener(listener)
         .build();
     }
 
-    public DataSource realDataSource() {
-        return DataSourceBuilder.create()
+    @Bean
+    public MetricsTrackerFactory metricsTrackerFactory() {
+        return new MyMetricsTrackerFactory();
+    }
+
+    public DataSource realDataSource(@Autowired MetricsTrackerFactory factory) {
+        DataSource ds = DataSourceBuilder.create()
         .driverClassName("com.mysql.cj.jdbc.Driver")
         .url("jdbc:mysql://localhost:3306/world?autoreconnect=true&serverTimezone=UTC&useLegacyDatetimeCode=false")
         .username("root")
         .password("root")
         .build();
+
+        // TODO
+        // new HikariDataSource().setMetricRegistry(metricRegistry);
+        ((HikariDataSource)ds).setMetricsTrackerFactory(factory);
+        // ((HikariDataSource)ds).setConnectionTimeout(100);
+        return ds;
     }
 
     @Bean(name = "transactionManager")

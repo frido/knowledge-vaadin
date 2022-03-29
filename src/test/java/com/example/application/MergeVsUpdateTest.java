@@ -22,6 +22,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,6 +46,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AppConfig.class})
 @ComponentScan(value = "com.example.application")
 public class MergeVsUpdateTest implements Consumer<EventRow> {
+
+    private static Logger log = LoggerFactory.getLogger(MergeVsUpdateTest.class);
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
@@ -149,6 +153,7 @@ public class MergeVsUpdateTest implements Consumer<EventRow> {
         assertEquals(1, filterSql("from know_person_with_version"));
         // one from update entity because it was not loaded so marked it as dirty
         assertEquals(1, filterSql("update know_person_with_version"));
+        // printLogs();
     }
 
     @Override
@@ -176,5 +181,9 @@ public class MergeVsUpdateTest implements Consumer<EventRow> {
             }
             return false;
         }).toList();
+    }
+
+    private void printLogs() {
+        this.list.forEach(x -> log.info(x.toString()));
     }
 }

@@ -36,4 +36,17 @@ public class EventRow {
     public String getPayload() {
         return this.payload;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " type='" + getType() + "'" +
+            ", id='" + getId() + "'" +
+            ", object='" + getObject() + "'" +
+            ", method='" + getMethod() + "'" +
+            ", payload='" + getPayload() + "'" +
+            "}";
+    }
+
+
 }

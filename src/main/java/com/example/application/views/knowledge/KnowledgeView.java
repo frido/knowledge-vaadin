@@ -3,6 +3,7 @@ package com.example.application.views.knowledge;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.application.MySessionBean;
 import com.example.application.knowledge.EventRow;
 import com.example.application.knowledge.MessageQueue;
 import com.example.application.knowledge.Person;
@@ -46,7 +47,7 @@ public class KnowledgeView extends Div {
 
     private UI ui;
 
-    public KnowledgeView(@Autowired EntityService service) {
+    public KnowledgeView(@Autowired EntityService service, @Autowired MySessionBean sessionBean) {
         this.service = service;
 
         checkboxGroup.setItems(LogType.values());

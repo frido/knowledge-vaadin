@@ -23,9 +23,9 @@ import com.vaadin.flow.theme.Theme;
 /**
  * The main view is a top-level placeholder for other views.
  */
-@PWA(name = "My App", shortName = "My App", enableInstallPrompt = false)
-@Theme(themeFolder = "myapp")
-@Push
+// @PWA(name = "My App", shortName = "My App", enableInstallPrompt = false)
+// @Theme(themeFolder = "myapp")
+// @Push
 public class MainView extends AppLayout {
 
     private final Tabs menu;

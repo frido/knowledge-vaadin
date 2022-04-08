@@ -7,9 +7,9 @@ import org.springframework.web.context.annotation.SessionScope;
 
 @Component
 @SessionScope
-public class MySessionBean implements InitializingBean  {
+public class MySessionBean2 implements InitializingBean  {
     
-    public MySessionBean() {
+    public MySessionBean2() {
         System.out.println();
     }
 

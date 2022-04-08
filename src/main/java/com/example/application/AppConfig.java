@@ -32,6 +32,12 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 @PropertySource(value = { "classpath:jdbc.properties", "classpath:application.properties" })
 @EnableTransactionManagement
 public class AppConfig {
+
+    // @Bean
+    // public MyRestController myRestController() {
+    //     return new MyRestController();
+    // }
+
     // @Bean
     // public CustomInterceptorImpl customInterceptorImpl() {
     //     return new CustomInterceptorImpl();

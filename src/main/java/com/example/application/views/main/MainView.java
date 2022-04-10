@@ -1,9 +1,7 @@
 package com.example.application.views.main;
 
 import java.util.Optional;
-
 import com.example.application.views.knowledge.KnowledgeView;
-import com.example.application.views.security.MySessionBean;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -13,18 +11,10 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.theme.Theme;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.SpringSessionContext;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -36,20 +26,10 @@ public class MainView extends AppLayout {
 
     private final Tabs menu;
 
-    public MainView(@Autowired MySessionBean sessionBean) {
+    public MainView() {
         HorizontalLayout header = createHeader();
         menu = createMenuTabs();
         addToNavbar(createTopBar(header, menu));
-
-        // SESSIONS:
-        // Vaadin:
-        VaadinSession vaadinSession = VaadinSession.getCurrent();
-
-        SecurityContext springSession = SecurityContextHolder.getContext();
-
-        sessionBean.call();
-
-        System.out.println("sessions");
     }
 
     private VerticalLayout createTopBar(HorizontalLayout header, Tabs menu) {

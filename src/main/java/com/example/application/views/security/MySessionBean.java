@@ -10,6 +10,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MySessionBean {
+    int x = 0;
     
     public void init() {
         System.out.println("init");
@@ -26,6 +27,11 @@ public class MySessionBean {
     }
 
     public void call() {
+        x++;
         System.out.println("call");
+    }
+
+    public int getX() {
+        return x;
     }
 }

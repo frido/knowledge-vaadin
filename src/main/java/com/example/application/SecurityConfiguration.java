@@ -7,10 +7,14 @@ import com.example.application.views.security.SecurityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +26,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * <li>Bypass security checks for static resources,</li>
  * <li>Restrict access to the application, allowing only logged in users,</li>
  * <li>Set up the login form</li>
-
+ * 
  */
 @EnableWebSecurity
 @Configuration
@@ -30,10 +34,38 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String LOGOUT_SUCCESS_URL = "/";
 
+	// @Bean
+	// @Override
+	// public AuthenticationManager authenticationManagerBean() throws Exception {
+	// return super.authenticationManagerBean();
+	// }
+
+	// @Bean
+	// @Override
+	// public UserDetailsService userDetailsService() {
+	// UserDetails user =
+	// User.withUsername("user")
+	// .password("{noop}password")
+	// .roles("USER")
+	// .build();
+
+	// return new InMemoryUserDetailsManager(user);
+	// }
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+		return new AuthenticationManager() {
+
+			@Override
+			public Authentication authenticate(Authentication authentication)
+					throws AuthenticationException {
+				UsernamePasswordAuthenticationToken result =
+						new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+								authentication.getCredentials(), authentication.getAuthorities());
+				return result;
+			}
+		};
 	}
 
 	@Bean
@@ -49,22 +81,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		// Not using Spring CSRF here to be able to use plain HTML for the login page
 		http.csrf().disable()
 
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()
+
 				// Register our CustomRequestCache, that saves unauthorized access attempts, so
 				// the user is redirected after login.
 				.requestCache().requestCache(requestCache())
+
+				// .and().httpBasic()
 
 				// Restrict access to our application.
 				.and().authorizeRequests()
 
 				// Allow all flow internal requests.
-				.requestMatchers(new RequestMatcher(){
+				.requestMatchers(new RequestMatcher() {
 
 					@Override
 					public boolean matches(HttpServletRequest request) {
-						return SecurityUtils.isFrameworkInternalRequest(request);
+						return SecurityUtils.isFrameworkInternalRequest(request)
+								|| request.getRequestURI().contains("rest-test-login");
 					}
 
 				}).permitAll()
+
 
 				// Allow all requests by logged in users.
 				.anyRequest().authenticated()
@@ -76,25 +114,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
 	}
 
-	@Bean
-	@Override
-	public UserDetailsService userDetailsService() {
-		UserDetails user =
-				User.withUsername("user")
-						.password("{noop}password")
-						.roles("USER")
-						.build();
-
-		return new InMemoryUserDetailsManager(user);
-	}
-
 	/**
 	 * Allows access to static resources, bypassing Spring security.
 	 */
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers(
-				"/rest-test/**",
+				// "/rest-test/**",
 
 				// Vaadin Flow static resources
 				"/VAADIN/**",
@@ -106,13 +132,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/robots.txt",
 
 				// web application manifest
-				"/manifest.webmanifest",
-				"/sw.js",
-				"/offline-page.html",
+				"/manifest.webmanifest", "/sw.js", "/offline-page.html",
 
 				// icons and images
-				"/icons/**",
-				"/images/**",
+				"/icons/**", "/images/**",
 
 				// (development mode) static resources
 				"/frontend/**",

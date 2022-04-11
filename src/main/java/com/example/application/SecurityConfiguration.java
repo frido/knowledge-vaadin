@@ -1,6 +1,5 @@
 package com.example.application;
 
-import javax.servlet.http.HttpServletRequest;
 import com.example.application.views.security.CustomRequestCache;
 import com.example.application.views.security.SecurityLoginView;
 import com.example.application.views.security.SecurityUtils;
@@ -15,11 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * Configures spring security, doing the following:
@@ -32,25 +26,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	/**
+	 *
+	 */
+	public static final String REST_TEST_LOGIN = "rest-test-login";
 	private static final String LOGOUT_SUCCESS_URL = "/";
-
-	// @Bean
-	// @Override
-	// public AuthenticationManager authenticationManagerBean() throws Exception {
-	// return super.authenticationManagerBean();
-	// }
-
-	// @Bean
-	// @Override
-	// public UserDetailsService userDetailsService() {
-	// UserDetails user =
-	// User.withUsername("user")
-	// .password("{noop}password")
-	// .roles("USER")
-	// .build();
-
-	// return new InMemoryUserDetailsManager(user);
-	// }
 
 	@Bean
 	@Override
@@ -60,10 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			@Override
 			public Authentication authenticate(Authentication authentication)
 					throws AuthenticationException {
-				UsernamePasswordAuthenticationToken result =
-						new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-								authentication.getCredentials(), authentication.getAuthorities());
-				return result;
+				return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+						authentication.getCredentials(), authentication.getAuthorities());
 			}
 		};
 	}
@@ -93,16 +71,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests()
 
 				// Allow all flow internal requests.
-				.requestMatchers(new RequestMatcher() {
-
-					@Override
-					public boolean matches(HttpServletRequest request) {
-						return SecurityUtils.isFrameworkInternalRequest(request)
-								|| request.getRequestURI().contains("rest-test-login");
-					}
-
-				}).permitAll()
-
+				.requestMatchers(request -> SecurityUtils.isFrameworkInternalRequest(request)
+						|| request.getRequestURI().contains(REST_TEST_LOGIN))
+				.permitAll()
 
 				// Allow all requests by logged in users.
 				.anyRequest().authenticated()

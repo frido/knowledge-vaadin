@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.vaadin.artur.helpers.LaunchUtil;
 
 /**
  * The entry point of the Spring Boot application.
@@ -15,7 +14,6 @@ import org.vaadin.artur.helpers.LaunchUtil;
 public class RestApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		// LaunchUtil.launchBrowserInDevelopmentMode(SpringApplication.run(TestApplication.class, args));
 		SpringApplication.run(RestApplication.class, args);
 	}
 

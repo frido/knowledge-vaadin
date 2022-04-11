@@ -9,8 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import com.example.application.knowledge.PersonWithVersion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,8 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AppConfig.class})
 @ComponentScan(value = "com.example.application")
 public class DataSourceConnectionTest {
-
-    private static Logger log = LoggerFactory.getLogger(DataSourceConnectionTest.class);
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;

@@ -1,9 +1,7 @@
 package com.example.application;
 
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,7 @@ import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
@@ -46,8 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AppConfig.class})
 @ComponentScan(value = "com.example.application")
 public class MergeVsUpdateTest implements Consumer<EventRow> {
-
-    private static Logger log = LoggerFactory.getLogger(MergeVsUpdateTest.class);
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
@@ -181,9 +172,5 @@ public class MergeVsUpdateTest implements Consumer<EventRow> {
             }
             return false;
         }).toList();
-    }
-
-    private void printLogs() {
-        this.list.forEach(x -> log.info(x.toString()));
     }
 }

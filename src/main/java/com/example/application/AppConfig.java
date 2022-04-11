@@ -33,16 +33,6 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 @EnableTransactionManagement
 public class AppConfig {
 
-    // @Bean
-    // public MyRestController myRestController() {
-    //     return new MyRestController();
-    // }
-
-    // @Bean
-    // public CustomInterceptorImpl customInterceptorImpl() {
-    //     return new CustomInterceptorImpl();
-    // }
-
     @Bean
     public DataSource dataSource(@Autowired Environment env, MetricsTrackerFactory factory) {
         SLF4JQueryLoggingListener listener = new SLF4JQueryLoggingListener();
@@ -67,10 +57,7 @@ public class AppConfig {
         .password("root")
         .build();
 
-        // TODO
-        // new HikariDataSource().setMetricRegistry(metricRegistry);
         ((HikariDataSource)ds).setMetricsTrackerFactory(factory);
-        // ((HikariDataSource)ds).setConnectionTimeout(100);
         return ds;
     }
 

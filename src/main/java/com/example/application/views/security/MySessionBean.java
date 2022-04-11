@@ -1,7 +1,5 @@
 package com.example.application.views.security;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -10,28 +8,13 @@ import org.springframework.web.context.WebApplicationContext;
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MySessionBean {
-    int x = 0;
-    
-    public void init() {
-        System.out.println("init");
+    int counter = 0;
+
+    public void increment() {
+        counter++;
     }
 
-    @PostConstruct
-    private void postConstruct() {
-        System.out.println("postConstruct");
-    }
-
-    @PreDestroy
-    public void preDestroy() {
-        System.out.println("preDestroy");
-    }
-
-    public void call() {
-        x++;
-        System.out.println("call");
-    }
-
-    public int getX() {
-        return x;
+    public int getCounter() {
+        return counter;
     }
 }

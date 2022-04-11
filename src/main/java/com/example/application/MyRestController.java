@@ -36,7 +36,7 @@ public class MyRestController {
 	}
 
     @RequestMapping("/rest-test-login")
-	public @ResponseBody String greeting2(@Autowired MySessionBean sessionBean, @Autowired HttpSession session) {
+	public @ResponseBody String greeting2(@Autowired HttpSession session) {
 
         final Authentication authentication = authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken("user", "pwd"));

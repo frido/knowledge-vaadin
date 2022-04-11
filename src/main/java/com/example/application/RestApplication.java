@@ -12,11 +12,11 @@ import org.vaadin.artur.helpers.LaunchUtil;
  */
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)
 @ComponentScan("com.example")
-public class TestApplication extends SpringBootServletInitializer {
+public class RestApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		// LaunchUtil.launchBrowserInDevelopmentMode(SpringApplication.run(TestApplication.class, args));
-		SpringApplication.run(TestApplication.class, args);
+		SpringApplication.run(RestApplication.class, args);
 	}
 
 }

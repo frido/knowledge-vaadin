@@ -37,6 +37,7 @@ public class ExternalLibrariesTest {
     @Test
     public void ehcache() {
         // TODO: test cache
+        // TODO: com.google.common.cache.Cache;
         fail();
     }
 

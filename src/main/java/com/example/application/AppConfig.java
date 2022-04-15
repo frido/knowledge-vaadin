@@ -34,6 +34,11 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 public class AppConfig {
 
     @Bean
+    public CustomInterceptorImpl customInterceptorImpl() {
+        return new CustomInterceptorImpl();
+    }
+
+    @Bean
     public DataSource dataSource(@Autowired Environment env, MetricsTrackerFactory factory) {
         SLF4JQueryLoggingListener listener = new SLF4JQueryLoggingListener();
         listener.setLogLevel(SLF4JLogLevel.INFO);

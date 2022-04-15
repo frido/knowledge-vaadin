@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
@@ -11,12 +12,12 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -52,7 +53,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RestApplication.class})
-@ComponentScan(value = "com.example.application")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SessionTest {
 
@@ -64,7 +64,6 @@ public class SessionTest {
 
     @Autowired
     AuthenticationManager authenticationManager;
-
 
     /**
      * Call login rest to authenticate user and then call rest to increment value in session bean.
@@ -90,8 +89,7 @@ public class SessionTest {
         response1.getEntity().getContent().close();
         assertEquals(store.cookies.get(0).getValue(), responseBody1);
 
-        // TODO: https://www.baeldung.com/awaitility-testing
-        Thread.sleep(1000); // requests can be paralel so wait
+        Awaitility.await().atLeast(1,TimeUnit.SECONDS);
 
         /**
          * It is restricted path so user have to be
@@ -106,7 +104,7 @@ public class SessionTest {
         assertEquals(MyRestController.USER, responseBody2);
         response2.getEntity().getContent().close();
 
-        Thread.sleep(1000);
+        Awaitility.await().atLeast(1,TimeUnit.SECONDS);
 
         /**
          * Test that value is session is incremented and the
@@ -119,7 +117,7 @@ public class SessionTest {
         assertEquals("3", responseBody3);
         response3.getEntity().getContent().close();
 
-        Thread.sleep(1000);
+        Awaitility.await().atLeast(1,TimeUnit.SECONDS);
     }
 
     /**

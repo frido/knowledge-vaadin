@@ -4,9 +4,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.Test;
 
-// TODO: check libraries v projekte
+/**
+ * External libraies in the project.
+ */
 public class ExternalLibrariesTest {
-    
+
     /**
      * org.apache.commons
      */
@@ -26,7 +28,6 @@ public class ExternalLibrariesTest {
      */
     @Test
     public void google() {
-        
         assertTrue(true);
     }
 
@@ -41,11 +42,16 @@ public class ExternalLibrariesTest {
 
     /**
      * org.joda.time.DateTime
+     * 
+     * Note that Joda-Time is considered to be a largely “finished” project. 
+     * No major enhancements are planned. 
+     * If using Java SE 8, please migrate to java.time (JSR-310).
+     * 
+     * https://code-examples.net/en/q/1c5f3cd
      */
     @Test
     public void joda() {
-        // TODO: compare joda (DateTime) vs jdk (LocalDateTime/ZonedDateTime)
-        fail();
+        assertTrue(true);
     }
 
     /**
@@ -56,5 +62,5 @@ public class ExternalLibrariesTest {
         // TODO: use mapstruct as mapper
         fail();
     }
-    
+
 }

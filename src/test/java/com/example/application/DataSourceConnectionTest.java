@@ -4,9 +4,11 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import com.example.application.knowledge.PersonWithVersion;
+import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
-@ComponentScan(value = "com.example.application")
+@ComponentScan(value = "com.example")
 public class DataSourceConnectionTest {
 
     @Autowired
@@ -46,8 +48,8 @@ public class DataSourceConnectionTest {
             em.find(PersonWithVersion.class, 1); // make query to create connection
         }
 
-        Thread.sleep(1000); // because PoolStats refresh stats max 1 per second TODO: use await
-        var x1a = trackerFactory.getPoolStats().getActiveConnections(); // TODO: encapsulate to nice object
+        Awaitility.await().atLeast(1,TimeUnit.SECONDS);
+        var x1a = trackerFactory.getPoolStats().getActiveConnections();
         assertEquals(10, x1a);
 
         // There is 10 connections

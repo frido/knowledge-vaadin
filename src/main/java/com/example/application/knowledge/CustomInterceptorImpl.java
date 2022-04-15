@@ -10,9 +10,8 @@ import org.hibernate.EmptyInterceptor;
 import org.hibernate.EntityMode;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
-import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 @SuppressWarnings("rawtypes")
 public class CustomInterceptorImpl extends EmptyInterceptor {
 

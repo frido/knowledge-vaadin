@@ -109,10 +109,4 @@ public class Person {
     public int hashCode() {
         return Objects.hash(id, name, department, team, items, cars);
     }
-
-
-    @PostLoad
-    public void postLoad() {
-//        TODO: generic base class with all listeners
-    }
 }

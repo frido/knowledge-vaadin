@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * security and querying rights from different beans of the UI.
  *
  */
+@SuppressWarnings("deprecation")
 public final class SecurityUtils {
 
 	private SecurityUtils() {

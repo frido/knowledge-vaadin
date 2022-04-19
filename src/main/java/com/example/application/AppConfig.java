@@ -9,6 +9,7 @@ import com.example.application.knowledge.CustomInterceptorImpl;
 import com.example.application.knowledge.CustomStatisticsImpl;
 import com.example.application.knowledge.InlineQueryLogEntryCreator;
 import com.example.application.knowledge.MessageQueue;
+import com.example.application.performance.MyPerformanceBean;
 import com.example.application.views.knowledge.LogType;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.metrics.MetricsTrackerFactory;
@@ -32,6 +33,11 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 @PropertySource(value = { "classpath:jdbc.properties", "classpath:application.properties" })
 @EnableTransactionManagement
 public class AppConfig {
+
+    @Bean
+    public MyPerformanceBean myPerformanceBean() {
+        return new MyPerformanceBean();
+    }
 
     @Bean
     public CustomInterceptorImpl customInterceptorImpl() {

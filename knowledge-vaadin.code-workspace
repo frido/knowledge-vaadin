@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.encoding": "utf8",
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "localhost",
+				"database": "world",
+				"username": "root",
+				"password": "root"
+			}
+		],
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"sonarlint.disableTelemetry": true,
+		"sonarlint.output.showAnalyzerLogs": true
+	}
+}

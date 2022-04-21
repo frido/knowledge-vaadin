@@ -6,9 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MyPerformanceBean {
+public class MyPerformanceTransactionalNestedBean {
 
-    public BigDecimal getter() {
-        return BigDecimal.ZERO;
+    @Autowired
+    MyPerformanceNestedBean nestedBean;
+
+    @Transactional
+    public BigDecimal getterTransactionalNested() {
+        return nestedBean.getterTransactional();
     }
+
 }

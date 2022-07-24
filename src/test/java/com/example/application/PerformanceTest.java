@@ -6,7 +6,6 @@ import com.example.application.performance.MyPerformanceBean;
 import com.example.application.performance.MyPerformanceDoubleBean;
 import com.example.application.performance.MyPerformanceTransactionalBean;
 import com.example.application.performance.MyPerformanceTransactionalNestedBean;
-import com.example.application.performance.MyPerformanceNestedBean;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +19,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * heap size = yong generation + old generation
  * permgen/metaspace = hold class metadata (for jvm)
  * 
- * TODO: see https://dzone.com/articles/understanding-the-java-memory-model-and-the-garbag
+ * TODO: see
+ * https://dzone.com/articles/understanding-the-java-memory-model-and-the-garbag
  * 
  * see {@code WeakReferenceTest.java}
  * 
@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class})
+@ContextConfiguration(classes = { AppConfig.class })
 public class PerformanceTest {
 
     @Autowired
@@ -45,14 +45,17 @@ public class PerformanceTest {
     MyPerformanceBean myPerformanceBean;
 
     /**
-     * EJB call is much slower. There are interceptors, and long stack in debug that invoke target class
-     * @Transactional annotation slowing down the calling. It creates proxy around bean to start/stop transaction.
+     * EJB call is much slower. There are interceptors, and long stack in debug that
+     * invoke target class
+     * 
+     * @Transactional annotation slowing down the calling. It creates proxy around
+     *                bean to start/stop transaction.
      * 
      */
     @Test
     public void ejb() {
         MyPerformance nobean = new MyPerformance();
-       
+
         /**
          * Transactional method call next service with transactional method.
          * Around transactional methods (both) is proxy that check transactions.
@@ -64,19 +67,22 @@ public class PerformanceTest {
         /**
          * Transactional method call own transactional method.
          * Method called from own service (even it is transactional) is called directly.
-         * So there is only one Transactional proxy around main method, 
+         * So there is only one Transactional proxy around main method,
          * methods called from inside service are called directly.
          */
         long watch4 = watch(() -> myPerformanceDoubleBean.getterTransactionalDouble());
 
         /**
-         * Transactional method call nothing, but there is still transactional proxy around method.
+         * Transactional method call nothing, but there is still transactional proxy
+         * around method.
          */
         long watch3 = watch(() -> myPerformanceTransactionalBean.getterTransactional());
 
         /**
-         * Method without transactional annotation is called directly even it is injected object.
-         * Injected object is exact object created in the configuration (without any proxy)
+         * Method without transactional annotation is called directly even it is
+         * injected object.
+         * Injected object is exact object created in the configuration (without any
+         * proxy)
          */
         long watch2 = watch(() -> myPerformanceBean.getter());
 
@@ -97,7 +103,7 @@ public class PerformanceTest {
     private long watch(Runnable runnable) {
         StopWatch w = new StopWatch();
         w.start();
-        for(int i = 0 ; i < 100 ; i++) {
+        for (int i = 0; i < 100; i++) {
             runnable.run();
         }
         w.stop();

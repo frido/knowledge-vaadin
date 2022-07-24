@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Stream;
+
+import org.assertj.core.util.Arrays;
 import org.junit.Test;
 
 /**
@@ -75,7 +77,8 @@ public class MavenTest {
     }
 
     private Stream<String> exec(String cmd) throws IOException {
-        Process process = Runtime.getRuntime().exec(cmd);
+        String[] array = Arrays.asList(cmd).toArray(new String[0]);
+        Process process = Runtime.getRuntime().exec(array);
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         return reader.lines();
     }
